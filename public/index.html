@@ -185,6 +185,123 @@
         margin: 0;
       }
       
+      /* Word definition inline display styles */
+      .word-link {
+        color: var(--primary-color);
+        text-decoration: underline;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.2s ease;
+      }
+      
+      .word-link:hover {
+        color: var(--accent-color);
+        text-decoration: none;
+      }
+      
+      .word-link.active {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 2px 4px;
+        border-radius: 3px;
+      }
+      
+      .definition-display {
+        background: #f8f9fa;
+        border: 2px solid var(--primary-color);
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 0.5rem 0;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        animation: slideDown 0.3s ease;
+      }
+      
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .definition-header {
+        color: var(--primary-color);
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .definition-close {
+        color: var(--text-secondary);
+        cursor: pointer;
+        font-size: 1.2rem;
+        font-weight: normal;
+        padding: 0 5px;
+        border-radius: 3px;
+        transition: all 0.2s ease;
+      }
+      
+      .definition-close:hover {
+        background-color: var(--accent-color);
+        color: white;
+      }
+      
+      .definition-phonetic {
+        color: var(--text-secondary);
+        font-style: italic;
+        font-size: 0.8rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .definition-meaning {
+        margin-bottom: 0.8rem;
+      }
+      
+      .definition-part-of-speech {
+        color: var(--accent-color);
+        font-weight: bold;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        margin-bottom: 0.3rem;
+      }
+      
+      .definition-text {
+        color: var(--text-primary);
+        margin-bottom: 0.3rem;
+      }
+      
+      .definition-example {
+        color: var(--text-secondary);
+        font-style: italic;
+        font-size: 0.85rem;
+        margin-left: 1rem;
+        border-left: 2px solid var(--border-color);
+        padding-left: 0.5rem;
+      }
+      
+      .definition-loading {
+        color: var(--text-secondary);
+        font-style: italic;
+        text-align: center;
+        padding: 1rem;
+      }
+      
+      .definition-error {
+        color: #e74c3c;
+        font-size: 0.8rem;
+        text-align: center;
+        padding: 1rem;
+      }
+      
       @media (max-width: 768px) {
         .tool-header h1 {
           font-size: 2rem;
@@ -198,6 +315,11 @@
         
         .tool-content {
           padding: 2rem 1rem;
+        }
+        
+        .definition-tooltip {
+          max-width: 280px;
+          font-size: 0.8rem;
         }
       }
     </style>
@@ -375,7 +497,12 @@
           // Filter matches
           const re = new RegExp("^" + pattern + "$", "i");
           const matches = searchData.filter(
-            (item) => item.length === currentLength && re.test(item.processedWord)
+            (item) => {
+              // For phrases, use trueLength (alphabetic chars only)
+              // For words, use length (all chars, but words don't have apostrophes etc.)
+              const itemLength = item.type === 'phrase' ? item.trueLength : item.length;
+              return itemLength === currentLength && re.test(item.processedWord);
+            }
           );
           
           if (matches.length > 0) {
@@ -400,7 +527,13 @@
               if (wordMatches.length > 0) {
                 resultsHTML += `<h4 style="color: var(--primary-color); margin: 1rem 0 0.5rem; font-size: 1rem;">Words (${wordMatches.length})</h4>`;
                 resultsHTML += wordMatches
-                  .map((item) => `<div class="suggestion">${item.displayWord}</div>`)
+                  .map((item) => {
+                    if (item.type === 'word') {
+                      return `<div class="suggestion"><span class="word-link" data-word="${item.displayWord}">${item.displayWord}</span></div>`;
+                    } else {
+                      return `<div class="suggestion">${item.displayWord}</div>`;
+                    }
+                  })
                   .join("");
               }
               
@@ -412,11 +545,24 @@
               }
             } else {
               resultsHTML += matches
-                .map((item) => `<div class="suggestion">${item.displayWord}</div>`)
+                .map((item) => {
+                  if (item.type === 'word') {
+                    return `<div class="suggestion"><span class="word-link" data-word="${item.displayWord}">${item.displayWord}</span></div>`;
+                  } else {
+                    return `<div class="suggestion">${item.displayWord}</div>`;
+                  }
+                })
                 .join("");
             }
             
             suggestionsDiv.innerHTML = resultsHTML;
+            
+            // Add click event listeners to word links
+            const wordLinks = suggestionsDiv.querySelectorAll('.word-link');
+            wordLinks.forEach(link => {
+              const word = link.getAttribute('data-word');
+              handleWordClick(link, word);
+            });
           } else {
             suggestionsDiv.innerHTML = `
               <h3>Word Suggestions</h3>
@@ -429,6 +575,182 @@
         }, 100);
       });
 
+      // Dictionary API functionality
+      let definitionCache = new Map(); // Cache to avoid repeated API calls
+      let currentDefinitionDiv = null;
+      let activeWordLink = null;
+
+      // Fetch word definition from Dictionary API
+      async function fetchDefinition(word) {
+        // Check cache first
+        if (definitionCache.has(word.toLowerCase())) {
+          return definitionCache.get(word.toLowerCase());
+        }
+
+        try {
+          const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word.toLowerCase())}`);
+          
+          if (!response.ok) {
+            throw new Error('Definition not found');
+          }
+          
+          const data = await response.json();
+          const result = formatDefinition(data[0]);
+          
+          // Cache the result
+          definitionCache.set(word.toLowerCase(), result);
+          return result;
+          
+        } catch (error) {
+          const errorResult = { error: 'Definition not available' };
+          definitionCache.set(word.toLowerCase(), errorResult);
+          return errorResult;
+        }
+      }
+
+      // Format the API response into readable definition
+      function formatDefinition(data) {
+        let formatted = {
+          word: data.word,
+          phonetic: data.phonetic || (data.phonetics && data.phonetics[0] && data.phonetics[0].text) || '',
+          meanings: []
+        };
+
+        if (data.meanings && data.meanings.length > 0) {
+          // Take first 2 meanings to keep display concise
+          data.meanings.slice(0, 2).forEach(meaning => {
+            let meaningObj = {
+              partOfSpeech: meaning.partOfSpeech,
+              definitions: []
+            };
+
+            // Take first 2 definitions per part of speech
+            if (meaning.definitions && meaning.definitions.length > 0) {
+              meaning.definitions.slice(0, 2).forEach(def => {
+                meaningObj.definitions.push({
+                  definition: def.definition,
+                  example: def.example || ''
+                });
+              });
+            }
+
+            formatted.meanings.push(meaningObj);
+          });
+        }
+
+        return formatted;
+      }
+
+      // Create and show definition display
+      function showDefinitionDisplay(wordElement, definition) {
+        // Remove any existing definition display
+        hideDefinitionDisplay();
+
+        // Mark the clicked word as active
+        wordElement.classList.add('active');
+        activeWordLink = wordElement;
+
+        // Create definition display div
+        const definitionDiv = document.createElement('div');
+        definitionDiv.className = 'definition-display';
+        
+        if (definition.error) {
+          definitionDiv.innerHTML = `<div class="definition-error">${definition.error}</div>`;
+        } else {
+          let html = `<div class="definition-header">
+            <span>${definition.word}</span>
+            <span class="definition-close" title="Close definition">×</span>
+          </div>`;
+          
+          if (definition.phonetic) {
+            html += `<div class="definition-phonetic">${definition.phonetic}</div>`;
+          }
+
+          definition.meanings.forEach(meaning => {
+            html += `<div class="definition-meaning">`;
+            html += `<div class="definition-part-of-speech">${meaning.partOfSpeech}</div>`;
+            
+            meaning.definitions.forEach((def, index) => {
+              html += `<div class="definition-text">${index + 1}. ${def.definition}</div>`;
+              if (def.example) {
+                html += `<div class="definition-example">"${def.example}"</div>`;
+              }
+            });
+            
+            html += `</div>`;
+          });
+
+          definitionDiv.innerHTML = html;
+          
+          // Add close button functionality
+          const closeBtn = definitionDiv.querySelector('.definition-close');
+          closeBtn.addEventListener('click', hideDefinitionDisplay);
+        }
+
+        // Insert the definition div after the parent suggestion div
+        const suggestionDiv = wordElement.closest('.suggestion');
+        if (suggestionDiv) {
+          suggestionDiv.parentNode.insertBefore(definitionDiv, suggestionDiv.nextSibling);
+          currentDefinitionDiv = definitionDiv;
+        }
+      }
+
+      // Hide definition display
+      function hideDefinitionDisplay() {
+        if (currentDefinitionDiv) {
+          currentDefinitionDiv.remove();
+          currentDefinitionDiv = null;
+        }
+        
+        if (activeWordLink) {
+          activeWordLink.classList.remove('active');
+          activeWordLink = null;
+        }
+      }
+
+      // Handle word click events
+      function handleWordClick(element, word) {
+        element.addEventListener('click', async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          // If this word is already active, hide the definition
+          if (element.classList.contains('active')) {
+            hideDefinitionDisplay();
+            return;
+          }
+          
+          // Hide any existing definition first
+          hideDefinitionDisplay();
+          
+          // Show loading state
+          element.classList.add('active');
+          activeWordLink = element;
+          
+          const loadingDiv = document.createElement('div');
+          loadingDiv.className = 'definition-display';
+          loadingDiv.innerHTML = '<div class="definition-loading">Loading definition...</div>';
+          
+          const suggestionDiv = element.closest('.suggestion');
+          if (suggestionDiv) {
+            suggestionDiv.parentNode.insertBefore(loadingDiv, suggestionDiv.nextSibling);
+            currentDefinitionDiv = loadingDiv;
+          }
+          
+          // Fetch definition
+          try {
+            const definition = await fetchDefinition(word);
+            
+            // Replace loading with actual definition
+            hideDefinitionDisplay();
+            showDefinitionDisplay(element, definition);
+          } catch (error) {
+            hideDefinitionDisplay();
+            showDefinitionDisplay(element, { error: 'Failed to load definition' });
+          }
+        });
+      }
+
       // Add keyboard shortcuts
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' && e.ctrlKey) {
@@ -438,6 +760,18 @@
           } else {
             lengthForm.dispatchEvent(new Event('submit'));
           }
+        }
+        
+        // Escape to hide definition
+        if (e.key === 'Escape') {
+          hideDefinitionDisplay();
+        }
+      });
+
+      // Hide definition when clicking elsewhere
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.definition-display') && !e.target.closest('.word-link')) {
+          hideDefinitionDisplay();
         }
       });
     </script>

@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 """
 Process AllPhrases.csv to create a new format with individual word entries.
+Fixed version that only counts alphabetic characters for true length.
 """
 
 import csv
 import os
+import re
+
+def count_alphabetic_chars(text):
+    """Count only alphabetic characters in a string."""
+    return len(re.sub(r'[^a-zA-Z]', '', text))
 
 def process_csv():
     input_file = "/Users/ashleycrompton/VSCode Projects/xword/Copy of AllPhrases.csv"
@@ -47,7 +53,8 @@ def process_csv():
                 if word and word != "":  # Only process non-empty words
                     display_word = word
                     processed_word = word.upper().replace(" ", "")
-                    true_length = len(display_word)
+                    # FIX: Only count alphabetic characters for true length
+                    true_length = count_alphabetic_chars(display_word)
                     
                     output_row = [letter_count, pattern, true_length, display_word, processed_word]
                     output_rows.append(output_row)
