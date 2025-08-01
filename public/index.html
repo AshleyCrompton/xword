@@ -3,52 +3,274 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Crossword Word Suggestion Tool</title>
+    <title>Word Suggestion Tool - Crossword Setters Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 2em;
+      .tool-header {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 8rem 0 4rem;
+        text-align: center;
       }
+      
+      .tool-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .tool-content {
+        padding: 4rem 0;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      
+      .tool-form {
+        background: white;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: var(--shadow-large);
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-color);
+      }
+      
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+      
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+      
+      .form-group input[type="number"] {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid var(--border-color);
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+      }
+      
+      .form-group input[type="number"]:focus {
+        outline: none;
+        border-color: var(--primary-color);
+      }
+      
+      .search-type-select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid var(--border-color);
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        background: white;
+        transition: border-color 0.3s ease;
+        cursor: pointer;
+      }
+      
+      .search-type-select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+      }
+      
       .letter-box {
-        width: 2em;
+        width: 3rem;
+        height: 3rem;
         text-align: center;
         text-transform: uppercase;
-        font-size: 1.5em;
-        margin: 0 0.2em;
+        font-size: 1.5rem;
+        margin: 0 0.25rem 0.5rem;
+        border: 2px solid var(--border-color);
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
       }
+      
+      .letter-box:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+      
+      .letter-inputs {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 1rem 0;
+      }
+      
       .suggestions {
-        margin-top: 1em;
+        background: white;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: var(--shadow-large);
+        border: 1px solid var(--border-color);
+        min-height: 200px;
       }
+      
+      .suggestions h3 {
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+        font-size: 1.25rem;
+      }
+      
       .suggestion {
-        padding: 0.2em 0;
+        padding: 0.75rem 1rem;
+        margin: 0.5rem 0;
+        background: var(--surface-color);
+        border-radius: 0.5rem;
+        border-left: 4px solid var(--primary-color);
+        transition: all 0.3s ease;
+        font-weight: 500;
+        color: var(--text-primary);
       }
-      .hidden {
-        display: none;
+      
+      .suggestion:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: translateX(5px);
       }
-      .input-row {
-        margin-bottom: 1em;
+      
+      .no-results {
+        text-align: center;
+        color: var(--text-secondary);
+        font-style: italic;
+        padding: 2rem;
+      }
+      
+      .loading {
+        text-align: center;
+        color: var(--text-secondary);
+        padding: 2rem;
+      }
+      
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 2rem;
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+      
+      .back-link:hover {
+        color: var(--primary-dark);
+      }
+      
+      .back-link::before {
+        content: '←';
+        margin-right: 0.5rem;
+        font-size: 1.2rem;
+      }
+      
+      .tool-instructions {
+        background: var(--surface-color);
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        margin-bottom: 2rem;
+        border-left: 4px solid var(--secondary-color);
+      }
+      
+      .tool-instructions h3 {
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+      }
+      
+      .tool-instructions p {
+        color: var(--text-secondary);
+        margin: 0;
+      }
+      
+      @media (max-width: 768px) {
+        .tool-header h1 {
+          font-size: 2rem;
+        }
+        
+        .letter-box {
+          width: 2.5rem;
+          height: 2.5rem;
+          font-size: 1.2rem;
+        }
+        
+        .tool-content {
+          padding: 2rem 1rem;
+        }
       }
     </style>
   </head>
   <body>
-    <h1>Crossword Word Suggestion Tool</h1>
-    <form id="length-form">
-      <label for="word-length">Number of letters (3-15): </label>
-      <input
-        type="number"
-        id="word-length"
-        name="word-length"
-        min="3"
-        max="15"
-        required
-      />
-      <button type="submit">Next</button>
-    </form>
-    <form id="pattern-form" class="hidden">
-      <div id="letter-inputs" class="input-row"></div>
-      <button type="submit">Find Suggestions</button>
-    </form>
-    <div class="suggestions" id="suggestions"></div>
+    <header class="header">
+      <nav class="nav container">
+        <div class="nav-brand">
+          <h1><a href="main.html" style="text-decoration: none; color: inherit;">🧩 Crossword Setters Hub</a></h1>
+        </div>
+        <ul class="nav-menu">
+          <li><a href="main.html" class="nav-link">Home</a></li>
+          <li><a href="main.html#tools" class="nav-link active">Tools</a></li>
+          <li><a href="blog.html" class="nav-link">Blog</a></li>
+          <li><a href="main.html#resources" class="nav-link">Resources</a></li>
+          <li><a href="main.html#about" class="nav-link">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="tool-header">
+      <div class="container">
+        <h1>🔍 Word Suggestion Tool</h1>
+        <p>Find words that match your crossword pattern with intelligent suggestions</p>
+      </div>
+    </section>
+
+    <main class="tool-content container">
+      <a href="main.html#tools" class="back-link">Back to Tools</a>
+      
+      <div class="tool-instructions">
+        <h3>How to Use</h3>
+        <p>Choose between searching words only (350k+ single words), phrases only (100k+ crossword phrases), or both. Enter the number of letters, then fill in any known letters in their positions. Leave unknown positions blank. Click "Find Suggestions" to see matching results.</p>
+      </div>
+
+      <form id="length-form" class="tool-form">
+        <div class="form-group">
+          <label for="word-length">Number of letters (3-15):</label>
+          <input
+            type="number"
+            id="word-length"
+            name="word-length"
+            min="3"
+            max="15"
+            required
+            placeholder="Enter word length"
+          />
+        </div>
+        <div class="form-group">
+          <label for="search-type">Search in:</label>
+          <select id="search-type" name="search-type" class="search-type-select">
+            <option value="both">Both Words and Phrases</option>
+            <option value="words">Words Only</option>
+            <option value="phrases">Phrases Only</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Pattern</button>
+      </form>
+
+      <form id="pattern-form" class="tool-form hidden">
+        <div class="form-group">
+          <label>Enter known letters (leave blank for unknown positions):</label>
+          <div id="letter-inputs" class="letter-inputs"></div>
+        </div>
+        <button type="submit" class="btn btn-primary">Find Suggestions</button>
+      </form>
+
+      <div class="suggestions" id="suggestions">
+        <h3>Word Suggestions</h3>
+        <div class="no-results">Enter a word length to get started</div>
+      </div>
+    </main>
+
     <script src="words.js"></script>
     <script>
       const lengthForm = document.getElementById("length-form");
@@ -56,6 +278,7 @@
       const letterInputs = document.getElementById("letter-inputs");
       const suggestionsDiv = document.getElementById("suggestions");
       let currentLength = 0;
+      let currentSearchType = 'both';
 
       lengthForm.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -63,7 +286,10 @@
           document.getElementById("word-length").value,
           10
         );
+        currentSearchType = document.getElementById("search-type").value;
+        
         if (currentLength < 3 || currentLength > 15) return;
+        
         letterInputs.innerHTML = "";
         for (let i = 0; i < currentLength; i++) {
           const input = document.createElement("input");
@@ -74,22 +300,52 @@
           input.inputMode = "text";
           input.pattern = "[A-Za-z]?";
           input.style.textTransform = "uppercase";
+          input.placeholder = "?";
           input.addEventListener("input", function () {
             this.value = this.value.toUpperCase().replace(/[^A-Z]/g, "");
+            // Auto-advance to next input
+            if (this.value && i < currentLength - 1) {
+              const nextInput = this.parentNode.children[i + 1];
+              if (nextInput) nextInput.focus();
+            }
+          });
+          input.addEventListener("keydown", function(e) {
+            // Allow backspace to go to previous input
+            if (e.key === "Backspace" && !this.value && i > 0) {
+              const prevInput = this.parentNode.children[i - 1];
+              if (prevInput) prevInput.focus();
+            }
           });
           letterInputs.appendChild(input);
         }
+        
         patternForm.classList.remove("hidden");
-        suggestionsDiv.innerHTML = "";
+        
+        const searchTypeText = {
+          'both': 'words and phrases',
+          'words': 'words only',
+          'phrases': 'phrases only'
+        }[currentSearchType];
+        
+        suggestionsDiv.innerHTML = `
+          <h3>Word Suggestions</h3>
+          <div class="no-results">Fill in the pattern above and click "Find Suggestions" to search ${searchTypeText}</div>
+        `;
+        
+        // Focus first input
+        const firstInput = letterInputs.querySelector('input');
+        if (firstInput) firstInput.focus();
       });
 
       patternForm.addEventListener("submit", function (e) {
         e.preventDefault();
 
-        // Check if words are loaded
-        if (WORDS.length === 0) {
-          suggestionsDiv.innerHTML =
-            "<i>Still loading words, please wait...</i>";
+        // Check if data is loaded
+        if (!isDataLoaded) {
+          suggestionsDiv.innerHTML = `
+            <h3>Word Suggestions</h3>
+            <div class="loading">⏳ Loading word database, please wait...</div>
+          `;
           return;
         }
 
@@ -98,17 +354,91 @@
         boxes.forEach((box) => {
           pattern += box.value ? box.value.toUpperCase() : ".";
         });
-        // Filter words
-        const re = new RegExp("^" + pattern + "$", "i");
-        const matches = WORDS.filter(
-          (word) => word.length === currentLength && re.test(word)
-        );
-        suggestionsDiv.innerHTML = matches.length
-          ? "<b>Suggestions:</b><br>" +
-            matches
-              .map((w) => `<div class="suggestion">${w.toUpperCase()}</div>`)
-              .join("")
-          : "<i>No matches found.</i>";
+
+        // Show loading state
+        const searchTypeText = {
+          'both': 'words and phrases',
+          'words': 'words',
+          'phrases': 'phrases'
+        }[currentSearchType];
+        
+        suggestionsDiv.innerHTML = `
+          <h3>Word Suggestions</h3>
+          <div class="loading">🔍 Searching ${searchTypeText} for matches...</div>
+        `;
+
+        // Use setTimeout to allow UI to update
+        setTimeout(() => {
+          // Get data based on selection
+          const searchData = getCombinedData(currentSearchType);
+          
+          // Filter matches
+          const re = new RegExp("^" + pattern + "$", "i");
+          const matches = searchData.filter(
+            (item) => item.length === currentLength && re.test(item.processedWord)
+          );
+          
+          if (matches.length > 0) {
+            // Sort matches alphabetically by display word, with words before phrases if both are selected
+            matches.sort((a, b) => {
+              if (currentSearchType === 'both') {
+                // If types are different, sort words before phrases
+                if (a.type !== b.type) {
+                  return a.type === 'word' ? -1 : 1;
+                }
+              }
+              return a.displayWord.localeCompare(b.displayWord);
+            });
+            
+            // Group results by type if showing both
+            let resultsHTML = `<h3>Word Suggestions (${matches.length} found)</h3>`;
+            
+            if (currentSearchType === 'both') {
+              const wordMatches = matches.filter(m => m.type === 'word');
+              const phraseMatches = matches.filter(m => m.type === 'phrase');
+              
+              if (wordMatches.length > 0) {
+                resultsHTML += `<h4 style="color: var(--primary-color); margin: 1rem 0 0.5rem; font-size: 1rem;">Words (${wordMatches.length})</h4>`;
+                resultsHTML += wordMatches
+                  .map((item) => `<div class="suggestion">${item.displayWord}</div>`)
+                  .join("");
+              }
+              
+              if (phraseMatches.length > 0) {
+                resultsHTML += `<h4 style="color: var(--secondary-color); margin: 1rem 0 0.5rem; font-size: 1rem;">Phrases (${phraseMatches.length})</h4>`;
+                resultsHTML += phraseMatches
+                  .map((item) => `<div class="suggestion">${item.displayWord}</div>`)
+                  .join("");
+              }
+            } else {
+              resultsHTML += matches
+                .map((item) => `<div class="suggestion">${item.displayWord}</div>`)
+                .join("");
+            }
+            
+            suggestionsDiv.innerHTML = resultsHTML;
+          } else {
+            suggestionsDiv.innerHTML = `
+              <h3>Word Suggestions</h3>
+              <div class="no-results">
+                🤔 No matches found for pattern "${pattern.replace(/\./g, '?')}" in ${searchTypeText}<br>
+                Try adjusting some letters or checking your pattern.
+              </div>
+            `;
+          }
+        }, 100);
+      });
+
+      // Add keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && e.ctrlKey) {
+          // Ctrl+Enter to submit current form
+          if (!patternForm.classList.contains('hidden')) {
+            patternForm.dispatchEvent(new Event('submit'));
+          } else {
+            lengthForm.dispatchEvent(new Event('submit'));
+          }
+        }
       });
     </script>
   </body>

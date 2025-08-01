@@ -1,4 +1,5 @@
-﻿3 Letters,"1,1,1",A A A,A B C,A B S,A B V,A C A,A G M,A K A,A N C,A S A
+﻿LetterCount, Pattern, Word1, Word2, Word3, Word4, Word5, Word6, Word7, Word8, Word9
+3 Letters,"1,1,1",A A A,A B C,A B S,A B V,A C A,A G M,A K A,A N C,A S A
 3 Letters,"1,1,1",B B C,B C E,B D D,B E M,B L T,B M I,B M W,B S E,B S T
 3 Letters,"1,1,1",B T W,C B I,C G I,C I A,C I D,C P I,C P R,C P S,C P U
 3 Letters,"1,1,1",D D T,D I D,D N A,,,,,,
