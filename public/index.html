@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crossword Word Suggestion Tool</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2em;
+      }
+      .letter-box {
+        width: 2em;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 1.5em;
+        margin: 0 0.2em;
+      }
+      .suggestions {
+        margin-top: 1em;
+      }
+      .suggestion {
+        padding: 0.2em 0;
+      }
+      .hidden {
+        display: none;
+      }
+      .input-row {
+        margin-bottom: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Crossword Word Suggestion Tool</h1>
+    <form id="length-form">
+      <label for="word-length">Number of letters (3-15): </label>
+      <input
+        type="number"
+        id="word-length"
+        name="word-length"
+        min="3"
+        max="15"
+        required
+      />
+      <button type="submit">Next</button>
+    </form>
+    <form id="pattern-form" class="hidden">
+      <div id="letter-inputs" class="input-row"></div>
+      <button type="submit">Find Suggestions</button>
+    </form>
+    <div class="suggestions" id="suggestions"></div>
+    <script src="words.js"></script>
+    <script>
+      const lengthForm = document.getElementById("length-form");
+      const patternForm = document.getElementById("pattern-form");
+      const letterInputs = document.getElementById("letter-inputs");
+      const suggestionsDiv = document.getElementById("suggestions");
+      let currentLength = 0;
+
+      lengthForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        currentLength = parseInt(
+          document.getElementById("word-length").value,
+          10
+        );
+        if (currentLength < 3 || currentLength > 15) return;
+        letterInputs.innerHTML = "";
+        for (let i = 0; i < currentLength; i++) {
+          const input = document.createElement("input");
+          input.type = "text";
+          input.maxLength = 1;
+          input.className = "letter-box";
+          input.autocomplete = "off";
+          input.inputMode = "text";
+          input.pattern = "[A-Za-z]?";
+          input.style.textTransform = "uppercase";
+          input.addEventListener("input", function () {
+            this.value = this.value.toUpperCase().replace(/[^A-Z]/g, "");
+          });
+          letterInputs.appendChild(input);
+        }
+        patternForm.classList.remove("hidden");
+        suggestionsDiv.innerHTML = "";
+      });
+
+      patternForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Check if words are loaded
+        if (WORDS.length === 0) {
+          suggestionsDiv.innerHTML =
+            "<i>Still loading words, please wait...</i>";
+          return;
+        }
+
+        const boxes = letterInputs.querySelectorAll("input");
+        let pattern = "";
+        boxes.forEach((box) => {
+          pattern += box.value ? box.value.toUpperCase() : ".";
+        });
+        // Filter words
+        const re = new RegExp("^" + pattern + "$", "i");
+        const matches = WORDS.filter(
+          (word) => word.length === currentLength && re.test(word)
+        );
+        suggestionsDiv.innerHTML = matches.length
+          ? "<b>Suggestions:</b><br>" +
+            matches
+              .map((w) => `<div class="suggestion">${w.toUpperCase()}</div>`)
+              .join("")
+          : "<i>No matches found.</i>";
+      });
+    </script>
+  </body>
+</html>
