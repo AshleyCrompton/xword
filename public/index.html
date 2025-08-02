@@ -4,10 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Word Suggestion Tool - Crossword Setters Hub</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       .tool-header {
         background: var(--gradient-primary);
@@ -15,18 +18,18 @@
         padding: 8rem 0 4rem;
         text-align: center;
       }
-      
+
       .tool-header h1 {
         font-size: 2.5rem;
         margin-bottom: 1rem;
       }
-      
+
       .tool-content {
         padding: 4rem 0;
         max-width: 800px;
         margin: 0 auto;
       }
-      
+
       .tool-form {
         background: white;
         padding: 2rem;
@@ -35,18 +38,18 @@
         margin-bottom: 2rem;
         border: 1px solid var(--border-color);
       }
-      
+
       .form-group {
         margin-bottom: 1.5rem;
       }
-      
+
       .form-group label {
         display: block;
         margin-bottom: 0.5rem;
         font-weight: 600;
         color: var(--text-primary);
       }
-      
+
       .form-group input[type="number"] {
         width: 100%;
         padding: 0.75rem;
@@ -55,12 +58,12 @@
         font-size: 1rem;
         transition: border-color 0.3s ease;
       }
-      
+
       .form-group input[type="number"]:focus {
         outline: none;
         border-color: var(--primary-color);
       }
-      
+
       .search-type-select {
         width: 100%;
         padding: 0.75rem;
@@ -71,12 +74,12 @@
         transition: border-color 0.3s ease;
         cursor: pointer;
       }
-      
+
       .search-type-select:focus {
         outline: none;
         border-color: var(--primary-color);
       }
-      
+
       .letter-box {
         width: 3rem;
         height: 3rem;
@@ -88,20 +91,20 @@
         border-radius: 0.5rem;
         transition: all 0.3s ease;
       }
-      
+
       .letter-box:focus {
         outline: none;
         border-color: var(--primary-color);
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
       }
-      
+
       .letter-inputs {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         margin: 1rem 0;
       }
-      
+
       .suggestions {
         background: white;
         padding: 2rem;
@@ -110,13 +113,13 @@
         border: 1px solid var(--border-color);
         min-height: 200px;
       }
-      
+
       .suggestions h3 {
         color: var(--text-primary);
         margin-bottom: 1rem;
         font-size: 1.25rem;
       }
-      
+
       .suggestion {
         padding: 0.75rem 1rem;
         margin: 0.5rem 0;
@@ -127,26 +130,26 @@
         font-weight: 500;
         color: var(--text-primary);
       }
-      
+
       .suggestion:hover {
         background: var(--primary-color);
         color: white;
         transform: translateX(5px);
       }
-      
+
       .no-results {
         text-align: center;
         color: var(--text-secondary);
         font-style: italic;
         padding: 2rem;
       }
-      
+
       .loading {
         text-align: center;
         color: var(--text-secondary);
         padding: 2rem;
       }
-      
+
       .back-link {
         display: inline-flex;
         align-items: center;
@@ -156,17 +159,17 @@
         font-weight: 500;
         transition: color 0.3s ease;
       }
-      
+
       .back-link:hover {
         color: var(--primary-dark);
       }
-      
+
       .back-link::before {
-        content: '←';
+        content: "←";
         margin-right: 0.5rem;
         font-size: 1.2rem;
       }
-      
+
       .tool-instructions {
         background: var(--surface-color);
         padding: 1.5rem;
@@ -174,17 +177,17 @@
         margin-bottom: 2rem;
         border-left: 4px solid var(--secondary-color);
       }
-      
+
       .tool-instructions h3 {
         color: var(--text-primary);
         margin-bottom: 0.5rem;
       }
-      
+
       .tool-instructions p {
         color: var(--text-secondary);
         margin: 0;
       }
-      
+
       /* Word definition inline display styles */
       .word-link {
         color: var(--primary-color);
@@ -193,19 +196,19 @@
         position: relative;
         transition: all 0.2s ease;
       }
-      
+
       .word-link:hover {
         color: var(--accent-color);
         text-decoration: none;
       }
-      
+
       .word-link.active {
         background-color: var(--primary-color);
         color: white;
         padding: 2px 4px;
         border-radius: 3px;
       }
-      
+
       .definition-display {
         background: #f8f9fa;
         border: 2px solid var(--primary-color);
@@ -214,10 +217,10 @@
         margin: 0.5rem 0;
         font-size: 0.9rem;
         line-height: 1.4;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         animation: slideDown 0.3s ease;
       }
-      
+
       @keyframes slideDown {
         from {
           opacity: 0;
@@ -228,7 +231,7 @@
           transform: translateY(0);
         }
       }
-      
+
       .definition-header {
         color: var(--primary-color);
         font-weight: bold;
@@ -239,7 +242,7 @@
         justify-content: space-between;
         align-items: center;
       }
-      
+
       .definition-close {
         color: var(--text-secondary);
         cursor: pointer;
@@ -249,23 +252,23 @@
         border-radius: 3px;
         transition: all 0.2s ease;
       }
-      
+
       .definition-close:hover {
         background-color: var(--accent-color);
         color: white;
       }
-      
+
       .definition-phonetic {
         color: var(--text-secondary);
         font-style: italic;
         font-size: 0.8rem;
         margin-bottom: 0.5rem;
       }
-      
+
       .definition-meaning {
         margin-bottom: 0.8rem;
       }
-      
+
       .definition-part-of-speech {
         color: var(--accent-color);
         font-weight: bold;
@@ -273,12 +276,12 @@
         text-transform: uppercase;
         margin-bottom: 0.3rem;
       }
-      
+
       .definition-text {
         color: var(--text-primary);
         margin-bottom: 0.3rem;
       }
-      
+
       .definition-example {
         color: var(--text-secondary);
         font-style: italic;
@@ -287,46 +290,46 @@
         border-left: 2px solid var(--border-color);
         padding-left: 0.5rem;
       }
-      
+
       .definition-loading {
         color: var(--text-secondary);
         font-style: italic;
         text-align: center;
         padding: 1rem;
       }
-      
+
       .definition-error {
         color: #e74c3c;
         font-size: 0.8rem;
         text-align: center;
         padding: 1rem;
       }
-      
+
       @media (max-width: 768px) {
         .tool-header h1 {
           font-size: 2rem;
         }
-        
+
         .letter-box {
           width: 2.5rem;
           height: 2.5rem;
           font-size: 1.2rem;
         }
-        
+
         .tool-content {
           padding: 2rem 1rem;
         }
-        
+
         .definition-tooltip {
           max-width: 280px;
           font-size: 0.8rem;
         }
       }
-      
+
       .hidden {
         display: none;
       }
-      
+
       .loading-status {
         text-align: center;
         padding: 1rem;
@@ -339,7 +342,11 @@
     <header class="header">
       <nav class="nav container">
         <div class="nav-brand">
-          <h1><a href="main.html" style="text-decoration: none; color: inherit;">🧩 Crossword Setters Hub</a></h1>
+          <h1>
+            <a href="main.html" style="text-decoration: none; color: inherit"
+              >🧩 Crossword Setters Hub</a
+            >
+          </h1>
         </div>
         <ul class="nav-menu">
           <li><a href="main.html" class="nav-link">Home</a></li>
@@ -355,16 +362,24 @@
     <section class="tool-header">
       <div class="container">
         <h1>🔍 Word Suggestion Tool</h1>
-        <p>Find words that match your crossword pattern with intelligent suggestions</p>
+        <p>
+          Find words that match your crossword pattern with intelligent
+          suggestions
+        </p>
       </div>
     </section>
 
     <main class="tool-content container">
       <a href="main.html#tools" class="back-link">Back to Tools</a>
-      
+
       <div class="tool-instructions">
         <h3>How to Use</h3>
-        <p>Choose between searching words only (350k+ single words), phrases only (100k+ crossword phrases), or both. Enter the number of letters, then fill in any known letters in their positions. Leave unknown positions blank. Click "Find Suggestions" to see matching results.</p>
+        <p>
+          Choose between searching words only (350k+ single words), phrases only
+          (100k+ crossword phrases), or both. Enter the number of letters, then
+          fill in any known letters in their positions. Leave unknown positions
+          blank. Click "Find Suggestions" to see matching results.
+        </p>
       </div>
 
       <form id="length-form" class="tool-form">
@@ -382,7 +397,11 @@
         </div>
         <div class="form-group">
           <label for="search-type">Search in:</label>
-          <select id="search-type" name="search-type" class="search-type-select">
+          <select
+            id="search-type"
+            name="search-type"
+            class="search-type-select"
+          >
             <option value="both">Both Words and Phrases</option>
             <option value="words">Words Only</option>
             <option value="phrases">Phrases Only</option>
@@ -393,7 +412,9 @@
 
       <form id="pattern-form" class="tool-form hidden">
         <div class="form-group">
-          <label>Enter known letters (leave blank for unknown positions):</label>
+          <label
+            >Enter known letters (leave blank for unknown positions):</label
+          >
           <div id="letter-inputs" class="letter-inputs"></div>
         </div>
         <button type="submit" class="btn btn-primary">Find Suggestions</button>
@@ -401,7 +422,9 @@
 
       <div class="suggestions" id="suggestions">
         <h3>Word Suggestions</h3>
-        <div class="loading-status" id="loading-status">Loading word database...</div>
+        <div class="loading-status" id="loading-status">
+          Loading word database...
+        </div>
         <div class="no-results hidden">Enter a word length to get started</div>
       </div>
     </main>
@@ -413,7 +436,7 @@
       const letterInputs = document.getElementById("letter-inputs");
       const suggestionsDiv = document.getElementById("suggestions");
       let currentLength = 0;
-      let currentSearchType = 'both';
+      let currentSearchType = "both";
 
       lengthForm.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -422,9 +445,9 @@
           10
         );
         currentSearchType = document.getElementById("search-type").value;
-        
+
         if (currentLength < 3 || currentLength > 15) return;
-        
+
         letterInputs.innerHTML = "";
         for (let i = 0; i < currentLength; i++) {
           const input = document.createElement("input");
@@ -444,7 +467,7 @@
               if (nextInput) nextInput.focus();
             }
           });
-          input.addEventListener("keydown", function(e) {
+          input.addEventListener("keydown", function (e) {
             // Allow backspace to go to previous input
             if (e.key === "Backspace" && !this.value && i > 0) {
               const prevInput = this.parentNode.children[i - 1];
@@ -453,22 +476,22 @@
           });
           letterInputs.appendChild(input);
         }
-        
+
         patternForm.classList.remove("hidden");
-        
+
         const searchTypeText = {
-          'both': 'words and phrases',
-          'words': 'words only',
-          'phrases': 'phrases only'
+          both: "words and phrases",
+          words: "words only",
+          phrases: "phrases only",
         }[currentSearchType];
-        
+
         suggestionsDiv.innerHTML = `
           <h3>Word Suggestions</h3>
           <div class="no-results">Fill in the pattern above and click "Find Suggestions" to search ${searchTypeText}</div>
         `;
-        
+
         // Focus first input
-        const firstInput = letterInputs.querySelector('input');
+        const firstInput = letterInputs.querySelector("input");
         if (firstInput) firstInput.focus();
       });
 
@@ -492,11 +515,11 @@
 
         // Show loading state
         const searchTypeText = {
-          'both': 'words and phrases',
-          'words': 'words',
-          'phrases': 'phrases'
+          both: "words and phrases",
+          words: "words",
+          phrases: "phrases",
         }[currentSearchType];
-        
+
         suggestionsDiv.innerHTML = `
           <h3>Word Suggestions</h3>
           <div class="loading">🔍 Searching ${searchTypeText} for matches...</div>
@@ -506,42 +529,41 @@
         setTimeout(() => {
           // Get data based on selection
           const searchData = getCombinedData(currentSearchType);
-          
+
           // Filter matches
           const re = new RegExp("^" + pattern + "$", "i");
-          const matches = searchData.filter(
-            (item) => {
-              // For phrases, use trueLength (alphabetic chars only)
-              // For words, use length (all chars, but words don't have apostrophes etc.)
-              const itemLength = item.type === 'phrase' ? item.trueLength : item.length;
-              return itemLength === currentLength && re.test(item.processedWord);
-            }
-          );
-          
+          const matches = searchData.filter((item) => {
+            // For phrases, use trueLength (alphabetic chars only)
+            // For words, use length (all chars, but words don't have apostrophes etc.)
+            const itemLength =
+              item.type === "phrase" ? item.trueLength : item.length;
+            return itemLength === currentLength && re.test(item.processedWord);
+          });
+
           if (matches.length > 0) {
             // Sort matches alphabetically by display word, with words before phrases if both are selected
             matches.sort((a, b) => {
-              if (currentSearchType === 'both') {
+              if (currentSearchType === "both") {
                 // If types are different, sort words before phrases
                 if (a.type !== b.type) {
-                  return a.type === 'word' ? -1 : 1;
+                  return a.type === "word" ? -1 : 1;
                 }
               }
               return a.displayWord.localeCompare(b.displayWord);
             });
-            
+
             // Group results by type if showing both
             let resultsHTML = `<h3>Word Suggestions (${matches.length} found)</h3>`;
-            
-            if (currentSearchType === 'both') {
-              const wordMatches = matches.filter(m => m.type === 'word');
-              const phraseMatches = matches.filter(m => m.type === 'phrase');
-              
+
+            if (currentSearchType === "both") {
+              const wordMatches = matches.filter((m) => m.type === "word");
+              const phraseMatches = matches.filter((m) => m.type === "phrase");
+
               if (wordMatches.length > 0) {
                 resultsHTML += `<h4 style="color: var(--primary-color); margin: 1rem 0 0.5rem; font-size: 1rem;">Words (${wordMatches.length})</h4>`;
                 resultsHTML += wordMatches
                   .map((item) => {
-                    if (item.type === 'word') {
+                    if (item.type === "word") {
                       return `<div class="suggestion"><span class="word-link" data-word="${item.displayWord}">${item.displayWord}</span></div>`;
                     } else {
                       return `<div class="suggestion">${item.displayWord}</div>`;
@@ -549,17 +571,20 @@
                   })
                   .join("");
               }
-              
+
               if (phraseMatches.length > 0) {
                 resultsHTML += `<h4 style="color: var(--secondary-color); margin: 1rem 0 0.5rem; font-size: 1rem;">Phrases (${phraseMatches.length})</h4>`;
                 resultsHTML += phraseMatches
-                  .map((item) => `<div class="suggestion">${item.displayWord}</div>`)
+                  .map(
+                    (item) =>
+                      `<div class="suggestion">${item.displayWord}</div>`
+                  )
                   .join("");
               }
             } else {
               resultsHTML += matches
                 .map((item) => {
-                  if (item.type === 'word') {
+                  if (item.type === "word") {
                     return `<div class="suggestion"><span class="word-link" data-word="${item.displayWord}">${item.displayWord}</span></div>`;
                   } else {
                     return `<div class="suggestion">${item.displayWord}</div>`;
@@ -567,20 +592,23 @@
                 })
                 .join("");
             }
-            
+
             suggestionsDiv.innerHTML = resultsHTML;
-            
+
             // Add click event listeners to word links
-            const wordLinks = suggestionsDiv.querySelectorAll('.word-link');
-            wordLinks.forEach(link => {
-              const word = link.getAttribute('data-word');
+            const wordLinks = suggestionsDiv.querySelectorAll(".word-link");
+            wordLinks.forEach((link) => {
+              const word = link.getAttribute("data-word");
               handleWordClick(link, word);
             });
           } else {
             suggestionsDiv.innerHTML = `
               <h3>Word Suggestions</h3>
               <div class="no-results">
-                🤔 No matches found for pattern "${pattern.replace(/\./g, '?')}" in ${searchTypeText}<br>
+                🤔 No matches found for pattern "${pattern.replace(
+                  /\./g,
+                  "?"
+                )}" in ${searchTypeText}<br>
                 Try adjusting some letters or checking your pattern.
               </div>
             `;
@@ -601,21 +629,24 @@
         }
 
         try {
-          const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word.toLowerCase())}`);
-          
+          const response = await fetch(
+            `https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(
+              word.toLowerCase()
+            )}`
+          );
+
           if (!response.ok) {
-            throw new Error('Definition not found');
+            throw new Error("Definition not found");
           }
-          
+
           const data = await response.json();
           const result = formatDefinition(data[0]);
-          
+
           // Cache the result
           definitionCache.set(word.toLowerCase(), result);
           return result;
-          
         } catch (error) {
-          const errorResult = { error: 'Definition not available' };
+          const errorResult = { error: "Definition not available" };
           definitionCache.set(word.toLowerCase(), errorResult);
           return errorResult;
         }
@@ -625,24 +656,27 @@
       function formatDefinition(data) {
         let formatted = {
           word: data.word,
-          phonetic: data.phonetic || (data.phonetics && data.phonetics[0] && data.phonetics[0].text) || '',
-          meanings: []
+          phonetic:
+            data.phonetic ||
+            (data.phonetics && data.phonetics[0] && data.phonetics[0].text) ||
+            "",
+          meanings: [],
         };
 
         if (data.meanings && data.meanings.length > 0) {
           // Take first 2 meanings to keep display concise
-          data.meanings.slice(0, 2).forEach(meaning => {
+          data.meanings.slice(0, 2).forEach((meaning) => {
             let meaningObj = {
               partOfSpeech: meaning.partOfSpeech,
-              definitions: []
+              definitions: [],
             };
 
             // Take first 2 definitions per part of speech
             if (meaning.definitions && meaning.definitions.length > 0) {
-              meaning.definitions.slice(0, 2).forEach(def => {
+              meaning.definitions.slice(0, 2).forEach((def) => {
                 meaningObj.definitions.push({
                   definition: def.definition,
-                  example: def.example || ''
+                  example: def.example || "",
                 });
               });
             }
@@ -660,13 +694,13 @@
         hideDefinitionDisplay();
 
         // Mark the clicked word as active
-        wordElement.classList.add('active');
+        wordElement.classList.add("active");
         activeWordLink = wordElement;
 
         // Create definition display div
-        const definitionDiv = document.createElement('div');
-        definitionDiv.className = 'definition-display';
-        
+        const definitionDiv = document.createElement("div");
+        definitionDiv.className = "definition-display";
+
         if (definition.error) {
           definitionDiv.innerHTML = `<div class="definition-error">${definition.error}</div>`;
         } else {
@@ -674,36 +708,41 @@
             <span>${definition.word}</span>
             <span class="definition-close" title="Close definition">×</span>
           </div>`;
-          
+
           if (definition.phonetic) {
             html += `<div class="definition-phonetic">${definition.phonetic}</div>`;
           }
 
-          definition.meanings.forEach(meaning => {
+          definition.meanings.forEach((meaning) => {
             html += `<div class="definition-meaning">`;
             html += `<div class="definition-part-of-speech">${meaning.partOfSpeech}</div>`;
-            
+
             meaning.definitions.forEach((def, index) => {
-              html += `<div class="definition-text">${index + 1}. ${def.definition}</div>`;
+              html += `<div class="definition-text">${index + 1}. ${
+                def.definition
+              }</div>`;
               if (def.example) {
                 html += `<div class="definition-example">"${def.example}"</div>`;
               }
             });
-            
+
             html += `</div>`;
           });
 
           definitionDiv.innerHTML = html;
-          
+
           // Add close button functionality
-          const closeBtn = definitionDiv.querySelector('.definition-close');
-          closeBtn.addEventListener('click', hideDefinitionDisplay);
+          const closeBtn = definitionDiv.querySelector(".definition-close");
+          closeBtn.addEventListener("click", hideDefinitionDisplay);
         }
 
         // Insert the definition div after the parent suggestion div
-        const suggestionDiv = wordElement.closest('.suggestion');
+        const suggestionDiv = wordElement.closest(".suggestion");
         if (suggestionDiv) {
-          suggestionDiv.parentNode.insertBefore(definitionDiv, suggestionDiv.nextSibling);
+          suggestionDiv.parentNode.insertBefore(
+            definitionDiv,
+            suggestionDiv.nextSibling
+          );
           currentDefinitionDiv = definitionDiv;
         }
       }
@@ -714,76 +753,85 @@
           currentDefinitionDiv.remove();
           currentDefinitionDiv = null;
         }
-        
+
         if (activeWordLink) {
-          activeWordLink.classList.remove('active');
+          activeWordLink.classList.remove("active");
           activeWordLink = null;
         }
       }
 
       // Handle word click events
       function handleWordClick(element, word) {
-        element.addEventListener('click', async (e) => {
+        element.addEventListener("click", async (e) => {
           e.preventDefault();
           e.stopPropagation();
-          
+
           // If this word is already active, hide the definition
-          if (element.classList.contains('active')) {
+          if (element.classList.contains("active")) {
             hideDefinitionDisplay();
             return;
           }
-          
+
           // Hide any existing definition first
           hideDefinitionDisplay();
-          
+
           // Show loading state
-          element.classList.add('active');
+          element.classList.add("active");
           activeWordLink = element;
-          
-          const loadingDiv = document.createElement('div');
-          loadingDiv.className = 'definition-display';
-          loadingDiv.innerHTML = '<div class="definition-loading">Loading definition...</div>';
-          
-          const suggestionDiv = element.closest('.suggestion');
+
+          const loadingDiv = document.createElement("div");
+          loadingDiv.className = "definition-display";
+          loadingDiv.innerHTML =
+            '<div class="definition-loading">Loading definition...</div>';
+
+          const suggestionDiv = element.closest(".suggestion");
           if (suggestionDiv) {
-            suggestionDiv.parentNode.insertBefore(loadingDiv, suggestionDiv.nextSibling);
+            suggestionDiv.parentNode.insertBefore(
+              loadingDiv,
+              suggestionDiv.nextSibling
+            );
             currentDefinitionDiv = loadingDiv;
           }
-          
+
           // Fetch definition
           try {
             const definition = await fetchDefinition(word);
-            
+
             // Replace loading with actual definition
             hideDefinitionDisplay();
             showDefinitionDisplay(element, definition);
           } catch (error) {
             hideDefinitionDisplay();
-            showDefinitionDisplay(element, { error: 'Failed to load definition' });
+            showDefinitionDisplay(element, {
+              error: "Failed to load definition",
+            });
           }
         });
       }
 
       // Add keyboard shortcuts
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && e.ctrlKey) {
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && e.ctrlKey) {
           // Ctrl+Enter to submit current form
-          if (!patternForm.classList.contains('hidden')) {
-            patternForm.dispatchEvent(new Event('submit'));
+          if (!patternForm.classList.contains("hidden")) {
+            patternForm.dispatchEvent(new Event("submit"));
           } else {
-            lengthForm.dispatchEvent(new Event('submit'));
+            lengthForm.dispatchEvent(new Event("submit"));
           }
         }
-        
+
         // Escape to hide definition
-        if (e.key === 'Escape') {
+        if (e.key === "Escape") {
           hideDefinitionDisplay();
         }
       });
 
       // Hide definition when clicking elsewhere
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('.definition-display') && !e.target.closest('.word-link')) {
+      document.addEventListener("click", (e) => {
+        if (
+          !e.target.closest(".definition-display") &&
+          !e.target.closest(".word-link")
+        ) {
           hideDefinitionDisplay();
         }
       });

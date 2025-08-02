@@ -7,10 +7,11 @@ Your website is entirely client-side with no server dependencies, making it idea
 ## Step 1: Prepare Files for Upload
 
 ### Files to Upload to S3:
+
 ```
 /public/
 ├── index.html (Word Tool)
-├── anagram.html (Anagram Generator) 
+├── anagram.html (Anagram Generator)
 ├── main.html (Homepage - rename to index.html)
 ├── blog.html (Blog)
 ├── styles.css
@@ -27,7 +28,7 @@ Your website is entirely client-side with no server dependencies, making it idea
 1. **Rename main.html to index.html** (S3 default page)
 2. **Move data files to public folder**:
    - `filtered_words.txt` → `public/filtered_words.txt`
-   - `short_words.txt` → `public/short_words.txt` 
+   - `short_words.txt` → `public/short_words.txt`
    - `ProcessedPhrases.csv` → `public/ProcessedPhrases.csv`
 
 ## Step 3: Update File Paths
@@ -35,27 +36,32 @@ Your website is entirely client-side with no server dependencies, making it idea
 The current code uses `../filename.txt` which won't work in S3. Update these fetch calls:
 
 ### In anagram.html:
+
 - Change `"../filtered_words.txt"` → `"filtered_words.txt"`
 - Change `"../short_words.txt"` → `"short_words.txt"`
 
 ### In words.js:
+
 - Change `"../filtered_words.txt"` → `"filtered_words.txt"`
 - Change `"../ProcessedPhrases.csv"` → `"ProcessedPhrases.csv"`
 
 ## Step 4: AWS S3 Setup
 
 1. **Create S3 Bucket**:
+
    ```bash
    aws s3 mb s3://your-crossword-site-name
    ```
 
 2. **Enable Static Website Hosting**:
+
    - Go to S3 Console → Your Bucket → Properties
    - Enable "Static website hosting"
    - Index document: `index.html`
    - Error document: `index.html` (for SPA behavior)
 
 3. **Set Bucket Policy** (make public):
+
    ```json
    {
      "Version": "2012-10-17",
@@ -72,6 +78,7 @@ The current code uses `../filename.txt` which won't work in S3. Update these fet
    ```
 
 4. **Upload Files**:
+
    ```bash
    aws s3 sync ./public s3://your-crossword-site-name --delete
    ```

@@ -5,24 +5,28 @@ A comprehensive public website for cryptic crossword setters, featuring professi
 ## Features
 
 ### 🔍 Word Suggestion Tool
+
 - Intelligent pattern matching for crossword construction
 - Uses processed word database for accurate search
 - Displays readable words while searching processed versions
 - Modern, responsive interface
 
 ### 📝 Blog System
+
 - Expert articles on crossword construction techniques
 - Category filtering (Tutorials, Techniques, Tools, Inspiration)
 - Search functionality across all posts
 - Modal view for full article reading
 
 ### 🔗 Resource Directory
+
 - Curated links to essential crossword tools
 - Dictionary and reference sites
 - Community forums and discussion groups
 - Learning materials and tutorials
 
 ### 🎨 Modern Design
+
 - Bright, contemporary color scheme
 - Responsive layout for all devices
 - Smooth animations and transitions
@@ -63,6 +67,7 @@ The `process_phrases.py` script converts the original `Copy of AllPhrases.csv` i
 ## Usage
 
 1. **Development**: Run a local HTTP server in the project directory
+
    ```bash
    python3 -m http.server 8000
    ```

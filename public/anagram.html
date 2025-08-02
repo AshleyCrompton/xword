@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Anagram Generator - Crossword Setters Hub</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
     <style>
       .anagram-container {
         max-width: 1000px;
@@ -13,26 +13,26 @@
         margin-top: 100px; /* Add space for fixed header */
         min-height: calc(100vh - 100px); /* Ensure full height usage */
       }
-      
+
       .anagram-form {
         background: white;
         padding: 2rem;
         border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         margin-bottom: 2rem;
       }
-      
+
       .input-group {
         margin-bottom: 1.5rem;
       }
-      
+
       .input-group label {
         display: block;
         margin-bottom: 0.5rem;
         font-weight: bold;
         color: var(--text-primary);
       }
-      
+
       #letters-input {
         width: 100%;
         padding: 1rem;
@@ -41,16 +41,16 @@
         border-radius: 8px;
         text-transform: uppercase;
         letter-spacing: 2px;
-        font-family: 'Courier New', monospace;
+        font-family: "Courier New", monospace;
         text-align: center;
       }
-      
+
       #letters-input:focus {
         outline: none;
         border-color: var(--primary-color);
         box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
       }
-      
+
       .generate-btn {
         background: var(--primary-color);
         color: white;
@@ -63,40 +63,40 @@
         transition: all 0.2s ease;
         width: 100%;
       }
-      
+
       .generate-btn:hover {
         background: var(--accent-color);
         transform: translateY(-2px);
       }
-      
+
       .generate-btn:disabled {
         background: #ccc;
         cursor: not-allowed;
         transform: none;
       }
-      
+
       .results-section {
         background: white;
         border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         overflow: hidden;
       }
-      
+
       .results-header {
         background: var(--primary-color);
         color: white;
         padding: 1.5rem;
         margin: 0;
       }
-      
+
       .results-content {
         padding: 2rem;
       }
-      
+
       .anagram-group {
         margin-bottom: 2rem;
       }
-      
+
       .anagram-group h4 {
         color: var(--primary-color);
         margin-bottom: 1rem;
@@ -104,13 +104,13 @@
         border-bottom: 2px solid var(--border-color);
         padding-bottom: 0.5rem;
       }
-      
+
       .anagram-list {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
         gap: 0.5rem;
       }
-      
+
       .anagram-word {
         background: #f8f9fa;
         padding: 0.5rem;
@@ -121,18 +121,18 @@
         transition: all 0.2s ease;
         cursor: pointer;
       }
-      
+
       .anagram-word:hover {
         background: var(--primary-color);
         color: white;
         transform: translateY(-1px);
       }
-      
+
       .phrase-list {
         grid-template-columns: 1fr;
         gap: 0.5rem;
       }
-      
+
       .anagram-phrase {
         background: #f0f8ff;
         padding: 0.8rem;
@@ -144,26 +144,26 @@
         cursor: pointer;
         font-size: 1rem;
       }
-      
+
       .anagram-phrase:hover {
         background: var(--secondary-color);
         color: white;
         transform: translateY(-1px);
       }
-      
+
       .no-results {
         text-align: center;
         padding: 3rem;
         color: var(--text-secondary);
         font-style: italic;
       }
-      
+
       .loading {
         text-align: center;
         padding: 3rem;
         color: var(--text-secondary);
       }
-      
+
       .letter-count {
         background: var(--secondary-color);
         color: white;
@@ -172,7 +172,7 @@
         font-size: 0.9rem;
         margin-left: 0.5rem;
       }
-      
+
       .usage-stats {
         display: flex;
         justify-content: space-between;
@@ -184,7 +184,7 @@
         font-size: 0.9rem;
         color: var(--text-secondary);
       }
-      
+
       .instructions {
         background: #e3f2fd;
         border-left: 4px solid var(--primary-color);
@@ -192,27 +192,27 @@
         margin-bottom: 2rem;
         border-radius: 0 8px 8px 0;
       }
-      
+
       .instructions h3 {
         margin-top: 0;
         color: var(--primary-color);
       }
-      
+
       .instructions ul {
         margin: 0.5rem 0;
         padding-left: 1.5rem;
       }
-      
+
       @media (max-width: 768px) {
         .anagram-container {
           padding: 1rem;
           margin-top: 80px; /* Slightly less space on mobile */
         }
-        
+
         .anagram-list {
           grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
         }
-        
+
         .usage-stats {
           flex-direction: column;
           gap: 0.5rem;
@@ -225,12 +225,18 @@
     <header class="header">
       <nav class="nav container">
         <div class="nav-brand">
-          <h1><a href="main.html" style="text-decoration: none; color: inherit;">🧩 Crossword Setters Hub</a></h1>
+          <h1>
+            <a href="main.html" style="text-decoration: none; color: inherit"
+              >🧩 Crossword Setters Hub</a
+            >
+          </h1>
         </div>
         <ul class="nav-menu">
           <li><a href="main.html" class="nav-link">Home</a></li>
           <li><a href="index.html" class="nav-link">Word Tool</a></li>
-          <li><a href="anagram.html" class="nav-link active">Anagram Generator</a></li>
+          <li>
+            <a href="anagram.html" class="nav-link active">Anagram Generator</a>
+          </li>
           <li><a href="blog.html" class="nav-link">Blog</a></li>
           <li><a href="main.html#resources" class="nav-link">Resources</a></li>
           <li><a href="main.html#about" class="nav-link">About</a></li>
@@ -241,38 +247,54 @@
     <main class="anagram-container">
       <div class="tool-header">
         <h1>🔀 Anagram Generator</h1>
-        <p>Find perfect anagrams (single words and phrases) that use ALL letters exactly once</p>
+        <p>
+          Find perfect anagrams (single words and phrases) that use ALL letters
+          exactly once
+        </p>
       </div>
 
       <div class="instructions">
         <h3>How to Use:</h3>
         <ul>
-          <li>Enter any combination of letters (e.g., "SCHOOLMASTER", "LISTEN", "CAT")</li>
-          <li>Finds both single words and multi-word phrases using <strong>all letters exactly once</strong></li>
-          <li>For "SCHOOLMASTER" you'll get "THE CLASSROOM" and other combinations</li>
-          <li>For "LISTEN" you'll get "SILENT", "TINSEL", "ENLIST" and phrases like "TIN ELS"</li>
-          <li>Results are grouped into single words and phrases for easy browsing</li>
+          <li>
+            Enter any combination of letters (e.g., "SCHOOLMASTER", "LISTEN",
+            "CAT")
+          </li>
+          <li>
+            Finds both single words and multi-word phrases using
+            <strong>all letters exactly once</strong>
+          </li>
+          <li>
+            For "SCHOOLMASTER" you'll get "THE CLASSROOM" and other combinations
+          </li>
+          <li>
+            For "LISTEN" you'll get "SILENT", "TINSEL", "ENLIST" and phrases
+            like "TIN ELS"
+          </li>
+          <li>
+            Results are grouped into single words and phrases for easy browsing
+          </li>
         </ul>
       </div>
 
       <form class="anagram-form" id="anagram-form">
         <div class="input-group">
           <label for="letters-input">Enter Letters:</label>
-          <input 
-            type="text" 
-            id="letters-input" 
-            placeholder="e.g. SCHOOLMASTER, LISTEN, CAT" 
+          <input
+            type="text"
+            id="letters-input"
+            placeholder="e.g. SCHOOLMASTER, LISTEN, CAT"
             maxlength="15"
             autocomplete="off"
             spellcheck="false"
-          >
+          />
         </div>
         <button type="submit" class="generate-btn" id="generate-btn">
           🔍 Generate Anagrams
         </button>
       </form>
 
-      <div class="results-section" id="results-section" style="display: none;">
+      <div class="results-section" id="results-section" style="display: none">
         <h2 class="results-header" id="results-header">Anagrams Found</h2>
         <div class="results-content">
           <div class="usage-stats" id="usage-stats"></div>
@@ -288,28 +310,29 @@
       // Load words from both the main word list and short words
       async function loadWords() {
         try {
-          console.log('Loading word data for anagram generation...');
-          
+          console.log("Loading word data for anagram generation...");
+
           // Load main word list
           const mainWordsResponse = await fetch("filtered_words.txt");
           const mainWordsText = await mainWordsResponse.text();
-          const mainWords = mainWordsText.split("\n")
-            .map(word => word.trim().toLowerCase())
-            .filter(word => word.length >= 3);
-          
+          const mainWords = mainWordsText
+            .split("\n")
+            .map((word) => word.trim().toLowerCase())
+            .filter((word) => word.length >= 3);
+
           // Load short words (1-2 letters)
           const shortWordsResponse = await fetch("short_words.txt");
           const shortWordsText = await shortWordsResponse.text();
-          const shortWords = shortWordsText.split("\n")
-            .map(word => word.trim().toLowerCase())
-            .filter(word => word.length >= 1 && word.length <= 2);
-          
+          const shortWords = shortWordsText
+            .split("\n")
+            .map((word) => word.trim().toLowerCase())
+            .filter((word) => word.length >= 1 && word.length <= 2);
+
           // Combine and deduplicate
           WORDS = [...new Set([...shortWords, ...mainWords])];
-          
+
           isDataLoaded = true;
           console.log(`Loaded ${WORDS.length} words for anagram generation`);
-          
         } catch (error) {
           console.error("Error loading word data:", error);
         }
@@ -320,93 +343,149 @@
 
       // Normalize and sort letters in a word
       function normalizeLetters(word) {
-        return word.toLowerCase().replace(/[^a-z]/g, '').split('').sort().join('');
+        return word
+          .toLowerCase()
+          .replace(/[^a-z]/g, "")
+          .split("")
+          .sort()
+          .join("");
       }
 
       // Check if word is a perfect anagram (uses exactly the same letters)
       function isPerfectAnagram(word, inputLetters) {
         const wordNormalized = normalizeLetters(word);
         const inputNormalized = normalizeLetters(inputLetters);
-        
+
         // Must be exactly the same length
         if (wordNormalized.length !== inputNormalized.length) {
           return false;
         }
-        
+
         // Must use exactly the same letters (when sorted)
         return wordNormalized === inputNormalized;
       }
 
       // Generate word combinations recursively with timeout protection
-      function findWordCombinations(remainingLetters, currentWords = [], allCombinations = [], startTime = Date.now()) {
+      function findWordCombinations(
+        remainingLetters,
+        currentWords = [],
+        allCombinations = [],
+        startTime = Date.now()
+      ) {
         // Timeout protection (10 seconds max for longer words)
         if (Date.now() - startTime > 10000) {
-          console.warn('Search timeout reached after 10 seconds');
-          throw new Error('Search timeout - too many combinations');
+          console.warn("Search timeout reached after 10 seconds");
+          throw new Error("Search timeout - too many combinations");
         }
-        
+
         // Limit number of combinations to prevent memory issues
         if (allCombinations.length > 2000) {
-          console.warn('Combination limit reached: 2000');
-          throw new Error('Too many combinations found - limiting results');
+          console.warn("Combination limit reached: 2000");
+          throw new Error("Too many combinations found - limiting results");
         }
-        
+
         const remainingNormalized = normalizeLetters(remainingLetters);
-        
+
         // If no letters remaining, we found a complete combination
         if (remainingNormalized.length === 0) {
           if (currentWords.length > 0) {
             allCombinations.push([...currentWords]);
             // Log successful combinations for debugging
             if (allCombinations.length <= 10) {
-              console.log('Found combination:', currentWords.join(' '));
+              console.log("Found combination:", currentWords.join(" "));
             }
           }
           return;
         }
-        
-        // Sort words strategically: 
+
+        // Sort words strategically:
         // 1. Common short words first (the, and, for, etc.)
         // 2. Then longer words
-        const commonShortWords = ['the', 'and', 'for', 'you', 'are', 'not', 'but', 'can', 'had', 'her', 'was', 'one', 'our', 'out', 'day', 'get', 'has', 'him', 'his', 'how', 'man', 'new', 'now', 'old', 'see', 'two', 'way', 'who', 'boy', 'did', 'its', 'let', 'put', 'say', 'she', 'too', 'use'];
-        
+        const commonShortWords = [
+          "the",
+          "and",
+          "for",
+          "you",
+          "are",
+          "not",
+          "but",
+          "can",
+          "had",
+          "her",
+          "was",
+          "one",
+          "our",
+          "out",
+          "day",
+          "get",
+          "has",
+          "him",
+          "his",
+          "how",
+          "man",
+          "new",
+          "now",
+          "old",
+          "see",
+          "two",
+          "way",
+          "who",
+          "boy",
+          "did",
+          "its",
+          "let",
+          "put",
+          "say",
+          "she",
+          "too",
+          "use",
+        ];
+
         const sortedWords = [...WORDS].sort((a, b) => {
           const aIsCommon = commonShortWords.includes(a);
           const bIsCommon = commonShortWords.includes(b);
-          
+
           if (aIsCommon && !bIsCommon) return -1;
           if (!aIsCommon && bIsCommon) return 1;
-          
+
           // Then by length (longer first for efficiency)
           return b.length - a.length;
         });
-        
+
         // Try each word that can be formed from remaining letters
         for (let word of sortedWords) {
           const wordNormalized = normalizeLetters(word);
-          
+
           // Skip if word is longer than remaining letters
           if (wordNormalized.length > remainingNormalized.length) {
             continue;
           }
-          
+
           // Allow short words but limit to avoid noise
           if (currentWords.length > 0 && word.length < 2) {
             continue;
           }
-          
+
           // For performance, limit depth of recursion
           if (currentWords.length >= 4) {
             continue;
           }
-          
+
           // Check if this word can be formed from remaining letters
           if (canWordBeFormedFromLetters(word, remainingLetters)) {
             // Calculate what letters would remain after using this word
-            const newRemainingLetters = removeLettersFromString(remainingLetters, word);
-            
+            const newRemainingLetters = removeLettersFromString(
+              remainingLetters,
+              word
+            );
+
             // Recursively find combinations with remaining letters
-            findWordCombinations(newRemainingLetters, [...currentWords, word], allCombinations, startTime);
+            findWordCombinations(
+              newRemainingLetters,
+              [...currentWords, word],
+              allCombinations,
+              startTime
+            );
           }
         }
       }
@@ -415,34 +494,34 @@
       function canWordBeFormedFromLetters(word, availableLetters) {
         const wordNormalized = normalizeLetters(word);
         const availableNormalized = normalizeLetters(availableLetters);
-        
+
         // Count letters in available letters
         const available = {};
         for (let char of availableNormalized) {
           available[char] = (available[char] || 0) + 1;
         }
-        
+
         // Count letters needed for word
         const needed = {};
         for (let char of wordNormalized) {
           needed[char] = (needed[char] || 0) + 1;
         }
-        
+
         // Check if word can be formed
         for (let char in needed) {
           if (!available[char] || available[char] < needed[char]) {
             return false;
           }
         }
-        
+
         return true;
       }
 
       // Remove letters of a word from a string
       function removeLettersFromString(letters, wordToRemove) {
-        const lettersArray = normalizeLetters(letters).split('');
-        const wordArray = normalizeLetters(wordToRemove).split('');
-        
+        const lettersArray = normalizeLetters(letters).split("");
+        const wordArray = normalizeLetters(wordToRemove).split("");
+
         // Remove each letter of the word from the letters array
         for (let char of wordArray) {
           const index = lettersArray.indexOf(char);
@@ -450,83 +529,93 @@
             lettersArray.splice(index, 1);
           }
         }
-        
-        return lettersArray.join('');
+
+        return lettersArray.join("");
       }
 
       // Global search state for continuing searches
       let currentSearchState = null;
 
       // More efficient anagram generation with progressive loading
-      function generateAnagrams(letters, continueSearch = false, timeoutMs = 15000) {
+      function generateAnagrams(
+        letters,
+        continueSearch = false,
+        timeoutMs = 15000
+      ) {
         if (!isDataLoaded) {
           return [];
         }
-        
+
         if (!continueSearch) {
           console.log(`Generating anagrams for: "${letters}"`);
           const normalizedInput = normalizeLetters(letters);
           console.log(`Normalized letters: "${normalizedInput}"`);
           console.log(`Total words in database: ${WORDS.length}`);
-          
+
           // Reset search state for new search
           currentSearchState = {
             letters: letters,
             normalizedInput: normalizedInput,
             results: [],
             candidateWords: null,
-            searchPhase: 'single-word',
+            searchPhase: "single-word",
             startTime: Date.now(),
-            lastTimeout: false
+            lastTimeout: false,
           };
         }
-        
+
         const results = currentSearchState.results;
         const normalizedInput = currentSearchState.normalizedInput;
         const startTime = Date.now();
-        
+
         try {
           // Phase 1: Single-word anagrams (only on first run)
-          if (currentSearchState.searchPhase === 'single-word') {
-            console.log('Phase 1: Finding single-word anagrams...');
+          if (currentSearchState.searchPhase === "single-word") {
+            console.log("Phase 1: Finding single-word anagrams...");
             let singleWordCount = 0;
             for (let word of WORDS) {
               if (isPerfectAnagram(word, letters)) {
                 results.push({
                   text: word,
                   wordCount: 1,
-                  words: [word]
+                  words: [word],
                 });
                 singleWordCount++;
               }
             }
             console.log(`Found ${singleWordCount} single-word anagrams`);
-            currentSearchState.searchPhase = 'prepare-multi';
+            currentSearchState.searchPhase = "prepare-multi";
           }
-          
+
           // Phase 2: Prepare for multi-word search
-          if (currentSearchState.searchPhase === 'prepare-multi') {
-            console.log('Phase 2: Preparing multi-word search...');
-            currentSearchState.candidateWords = WORDS.filter(word => {
+          if (currentSearchState.searchPhase === "prepare-multi") {
+            console.log("Phase 2: Preparing multi-word search...");
+            currentSearchState.candidateWords = WORDS.filter((word) => {
               const wordNormalized = normalizeLetters(word);
-              return wordNormalized.length <= normalizedInput.length && 
-                     wordNormalized.length >= 2 && // minimum 2 letters
-                     canWordBeFormedFromLetters(word, letters);
+              return (
+                wordNormalized.length <= normalizedInput.length &&
+                wordNormalized.length >= 2 && // minimum 2 letters
+                canWordBeFormedFromLetters(word, letters)
+              );
             });
-            console.log(`Filtered to ${currentSearchState.candidateWords.length} candidate words`);
-            currentSearchState.searchPhase = 'multi-word';
+            console.log(
+              `Filtered to ${currentSearchState.candidateWords.length} candidate words`
+            );
+            currentSearchState.searchPhase = "multi-word";
           }
-          
+
           // Phase 3: Multi-word combinations
-          if (currentSearchState.searchPhase === 'multi-word') {
-            console.log(`Phase 3: Multi-word search (timeout: ${timeoutMs}ms)...`);
-            
+          if (currentSearchState.searchPhase === "multi-word") {
+            console.log(
+              `Phase 3: Multi-word search (timeout: ${timeoutMs}ms)...`
+            );
+
             if (normalizedInput.length >= 10) {
               // For long inputs, use targeted approach
               const multiWordResults = findTargetedCombinations(
-                letters, 
-                currentSearchState.candidateWords, 
-                startTime, 
+                letters,
+                currentSearchState.candidateWords,
+                startTime,
                 timeoutMs
               );
               results.push(...multiWordResults);
@@ -534,146 +623,182 @@
               // For shorter inputs, use recursive approach
               const combinations = [];
               findWordCombinationsOptimized(
-                letters, 
-                [], 
-                combinations, 
-                currentSearchState.candidateWords, 
-                startTime, 
-                0, 
+                letters,
+                [],
+                combinations,
+                currentSearchState.candidateWords,
+                startTime,
+                0,
                 timeoutMs
               );
-              
+
               for (let combination of combinations) {
                 if (combination.length > 1) {
                   results.push({
-                    text: combination.join(' '),
+                    text: combination.join(" "),
                     wordCount: combination.length,
-                    words: combination
+                    words: combination,
                   });
                 }
               }
             }
-            
-            currentSearchState.searchPhase = 'complete';
+
+            currentSearchState.searchPhase = "complete";
           }
-          
+
           const searchTime = Date.now() - startTime;
           console.log(`Search phase completed in ${searchTime}ms`);
           currentSearchState.lastTimeout = false;
-          
         } catch (error) {
-          console.warn('Search timed out:', error.message);
+          console.warn("Search timed out:", error.message);
           currentSearchState.lastTimeout = true;
         }
-        
+
         console.log(`Total results found: ${results.length}`);
         return {
           results: [...results],
-          canContinue: currentSearchState.lastTimeout && currentSearchState.searchPhase !== 'complete',
-          searchState: currentSearchState
+          canContinue:
+            currentSearchState.lastTimeout &&
+            currentSearchState.searchPhase !== "complete",
+          searchState: currentSearchState,
         };
       }
 
       // Targeted approach for long words with timeout support
-      function findTargetedCombinations(letters, candidateWords, startTime, timeoutMs) {
+      function findTargetedCombinations(
+        letters,
+        candidateWords,
+        startTime,
+        timeoutMs
+      ) {
         const results = [];
         const normalizedInput = normalizeLetters(letters);
-        
-        console.log(`Starting targeted search for ${candidateWords.length} candidate words...`);
-        
+
+        console.log(
+          `Starting targeted search for ${candidateWords.length} candidate words...`
+        );
+
         // Try 2-word combinations with strategic filtering
         let combinationsChecked = 0;
-        for (let i = 0; i < candidateWords.length && results.length < 200; i++) {
+        for (
+          let i = 0;
+          i < candidateWords.length && results.length < 200;
+          i++
+        ) {
           // Check timeout
           if (Date.now() - startTime > timeoutMs) {
-            console.log(`Timeout reached after checking ${combinationsChecked} combinations`);
+            console.log(
+              `Timeout reached after checking ${combinationsChecked} combinations`
+            );
             throw new Error(`Search timeout after ${timeoutMs}ms`);
           }
-          
+
           const word1 = candidateWords[i];
           const word1Normalized = normalizeLetters(word1);
-          
+
           // Skip very short first words for long inputs
           if (word1.length < 3) continue;
-          
+
           const remainingLetters = removeLettersFromString(letters, word1);
           const remainingNormalized = normalizeLetters(remainingLetters);
-          
+
           if (remainingNormalized.length === 0) continue;
-          
+
           // Look for exact matches in remaining letters
           for (let j = 0; j < candidateWords.length; j++) {
             combinationsChecked++;
-            
+
             if (i === j) continue;
-            
+
             const word2 = candidateWords[j];
             const word2Normalized = normalizeLetters(word2);
-            
+
             // Check if word2 exactly matches remaining letters
             if (word2Normalized === remainingNormalized) {
               results.push({
                 text: `${word1} ${word2}`,
                 wordCount: 2,
-                words: [word1, word2]
+                words: [word1, word2],
               });
               console.log(`Found 2-word combination: ${word1} ${word2}`);
             }
-            
+
             // Check timeout more frequently for inner loop
-            if (combinationsChecked % 1000 === 0 && Date.now() - startTime > timeoutMs) {
-              console.log(`Timeout reached after checking ${combinationsChecked} combinations`);
+            if (
+              combinationsChecked % 1000 === 0 &&
+              Date.now() - startTime > timeoutMs
+            ) {
+              console.log(
+                `Timeout reached after checking ${combinationsChecked} combinations`
+              );
               throw new Error(`Search timeout after ${timeoutMs}ms`);
             }
           }
         }
-        
-        console.log(`Checked ${combinationsChecked} combinations, found ${results.length} results`);
+
+        console.log(
+          `Checked ${combinationsChecked} combinations, found ${results.length} results`
+        );
         return results;
       }
 
       // Optimized recursive function with configurable timeout
-      function findWordCombinationsOptimized(remainingLetters, currentWords, allCombinations, candidateWords, startTime, depth, timeoutMs) {
+      function findWordCombinationsOptimized(
+        remainingLetters,
+        currentWords,
+        allCombinations,
+        candidateWords,
+        startTime,
+        depth,
+        timeoutMs
+      ) {
         // Configurable timeout
         if (Date.now() - startTime > timeoutMs) {
           throw new Error(`Search timeout after ${timeoutMs}ms`);
         }
-        
+
         // Increase combination limit for longer timeouts
         const maxCombinations = Math.min(500, Math.floor(timeoutMs / 30)); // 500 max, but scale with timeout
         if (allCombinations.length > maxCombinations) {
-          throw new Error('Too many combinations found - use continue button for more');
+          throw new Error(
+            "Too many combinations found - use continue button for more"
+          );
         }
-        
-        if (depth > 4) { // Limit depth
+
+        if (depth > 4) {
+          // Limit depth
           return;
         }
-        
+
         const remainingNormalized = normalizeLetters(remainingLetters);
-        
+
         if (remainingNormalized.length === 0) {
           if (currentWords.length > 0) {
             allCombinations.push([...currentWords]);
             if (allCombinations.length <= 5) {
-              console.log('Found combination:', currentWords.join(' '));
+              console.log("Found combination:", currentWords.join(" "));
             }
           }
           return;
         }
-        
+
         // Only try words that could fit in remaining letters
         for (let word of candidateWords) {
-          if (normalizeLetters(word).length > remainingNormalized.length) continue;
+          if (normalizeLetters(word).length > remainingNormalized.length)
+            continue;
           if (currentWords.includes(word)) continue; // Avoid duplicates
-          
+
           if (canWordBeFormedFromLetters(word, remainingLetters)) {
-            const newRemainingLetters = removeLettersFromString(remainingLetters, word);
+            const newRemainingLetters = removeLettersFromString(
+              remainingLetters,
+              word
+            );
             findWordCombinationsOptimized(
-              newRemainingLetters, 
-              [...currentWords, word], 
-              allCombinations, 
-              candidateWords, 
-              startTime, 
+              newRemainingLetters,
+              [...currentWords, word],
+              allCombinations,
+              candidateWords,
+              startTime,
               depth + 1,
               timeoutMs
             );
@@ -685,103 +810,142 @@
       function groupAnagramsByType(anagrams) {
         const groups = {
           single: {},
-          multi: {}
+          multi: {},
         };
-        
-        anagrams.forEach(result => {
-          const category = result.wordCount === 1 ? 'single' : 'multi';
-          const key = result.wordCount === 1 ? result.text.length : `${result.wordCount} words`;
-          
+
+        anagrams.forEach((result) => {
+          const category = result.wordCount === 1 ? "single" : "multi";
+          const key =
+            result.wordCount === 1
+              ? result.text.length
+              : `${result.wordCount} words`;
+
           if (!groups[category][key]) {
             groups[category][key] = [];
           }
           groups[category][key].push(result);
         });
-        
+
         // Sort each group alphabetically
-        Object.keys(groups.single).forEach(length => {
+        Object.keys(groups.single).forEach((length) => {
           groups.single[length].sort((a, b) => a.text.localeCompare(b.text));
         });
-        
-        Object.keys(groups.multi).forEach(wordCount => {
+
+        Object.keys(groups.multi).forEach((wordCount) => {
           groups.multi[wordCount].sort((a, b) => a.text.localeCompare(b.text));
         });
-        
+
         return groups;
       }
 
       // Display results with optional continue button
       function displayResults(letters, anagrams, canContinue = false) {
-        const resultsSection = document.getElementById('results-section');
-        const resultsHeader = document.getElementById('results-header');
-        const resultsContent = document.getElementById('results-content');
-        const usageStats = document.getElementById('usage-stats');
-        
+        const resultsSection = document.getElementById("results-section");
+        const resultsHeader = document.getElementById("results-header");
+        const resultsContent = document.getElementById("results-content");
+        const usageStats = document.getElementById("usage-stats");
+
         if (anagrams.length === 0) {
           resultsHeader.textContent = `No Perfect Anagrams Found`;
           resultsContent.innerHTML = `
             <div class="no-results">
               🤔 No perfect anagrams found for "${letters.toUpperCase()}"<br>
-              Perfect anagrams must use all ${normalizeLetters(letters).length} letters exactly once.<br>
+              Perfect anagrams must use all ${
+                normalizeLetters(letters).length
+              } letters exactly once.<br>
               Try different letters or check your spelling.
-              ${canContinue ? '<br><br><button onclick="continueSearch()" class="continue-btn">🔍 Continue Search (30s)</button>' : ''}
+              ${
+                canContinue
+                  ? '<br><br><button onclick="continueSearch()" class="continue-btn">🔍 Continue Search (30s)</button>'
+                  : ""
+              }
             </div>
           `;
-          usageStats.innerHTML = '';
+          usageStats.innerHTML = "";
         } else {
           const groups = groupAnagramsByType(anagrams);
-          const singleWordCount = Object.values(groups.single).reduce((sum, arr) => sum + arr.length, 0);
-          const multiWordCount = Object.values(groups.multi).reduce((sum, arr) => sum + arr.length, 0);
-          
+          const singleWordCount = Object.values(groups.single).reduce(
+            (sum, arr) => sum + arr.length,
+            0
+          );
+          const multiWordCount = Object.values(groups.multi).reduce(
+            (sum, arr) => sum + arr.length,
+            0
+          );
+
           resultsHeader.textContent = `Perfect Anagrams for "${letters.toUpperCase()}"`;
-          
+
           usageStats.innerHTML = `
-            <span><strong>${anagrams.length}</strong> perfect anagrams found</span>
+            <span><strong>${
+              anagrams.length
+            }</strong> perfect anagrams found</span>
             <span><strong>${singleWordCount}</strong> single words, <strong>${multiWordCount}</strong> phrases</span>
-            <span>All use exactly <strong>${normalizeLetters(letters).length}</strong> letters</span>
-            ${canContinue ? '<span style="color: #e74c3c;"><strong>Search timed out</strong> - may be more results</span>' : ''}
+            <span>All use exactly <strong>${
+              normalizeLetters(letters).length
+            }</strong> letters</span>
+            ${
+              canContinue
+                ? '<span style="color: #e74c3c;"><strong>Search timed out</strong> - may be more results</span>'
+                : ""
+            }
           `;
-          
-          let html = '';
-          
+
+          let html = "";
+
           // Display single words first
           if (singleWordCount > 0) {
             html += `<h3 style="color: var(--primary-color); margin: 2rem 0 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">Single Words</h3>`;
-            
-            const singleLengths = Object.keys(groups.single).sort((a, b) => parseInt(a) - parseInt(b));
-            singleLengths.forEach(length => {
+
+            const singleLengths = Object.keys(groups.single).sort(
+              (a, b) => parseInt(a) - parseInt(b)
+            );
+            singleLengths.forEach((length) => {
               const results = groups.single[length];
               html += `
                 <div class="anagram-group">
-                  <h4>${length} Letter${length === '1' ? '' : 's'} <span class="letter-count">${results.length}</span></h4>
+                  <h4>${length} Letter${
+                length === "1" ? "" : "s"
+              } <span class="letter-count">${results.length}</span></h4>
                   <div class="anagram-list">
-                    ${results.map(result => `<div class="anagram-word">${result.text.toUpperCase()}</div>`).join('')}
+                    ${results
+                      .map(
+                        (result) =>
+                          `<div class="anagram-word">${result.text.toUpperCase()}</div>`
+                      )
+                      .join("")}
                   </div>
                 </div>
               `;
             });
           }
-          
+
           // Display multi-word combinations
           if (multiWordCount > 0) {
             html += `<h3 style="color: var(--secondary-color); margin: 2rem 0 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">Phrases</h3>`;
-            
+
             const multiTypes = Object.keys(groups.multi).sort();
-            multiTypes.forEach(wordCountKey => {
+            multiTypes.forEach((wordCountKey) => {
               const results = groups.multi[wordCountKey];
               html += `
                 <div class="anagram-group">
-                  <h4>${wordCountKey} <span class="letter-count">${results.length}</span></h4>
+                  <h4>${wordCountKey} <span class="letter-count">${
+                results.length
+              }</span></h4>
                   <div class="anagram-list phrase-list">
-                    ${results.map(result => `<div class="anagram-phrase">${result.text.toUpperCase()}</div>`).join('')}
+                    ${results
+                      .map(
+                        (result) =>
+                          `<div class="anagram-phrase">${result.text.toUpperCase()}</div>`
+                      )
+                      .join("")}
                   </div>
                 </div>
               `;
             });
           }
-          
+
           resultsContent.innerHTML = html;
-          
+
           // Add continue button if search timed out
           if (canContinue) {
             resultsContent.innerHTML += `
@@ -808,97 +972,119 @@
             `;
           }
         }
-        
-        resultsSection.style.display = 'block';
-        resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        resultsSection.style.display = "block";
+        resultsSection.scrollIntoView({ behavior: "smooth", block: "start" });
       }
 
       // Continue search function
       function continueSearch() {
         if (!currentSearchState) {
-          alert('No search to continue.');
+          alert("No search to continue.");
           return;
         }
-        
-        const generateBtn = document.getElementById('generate-btn');
+
+        const generateBtn = document.getElementById("generate-btn");
         generateBtn.disabled = true;
-        generateBtn.textContent = '🔄 Continuing... (30s timeout)';
-        
+        generateBtn.textContent = "🔄 Continuing... (30s timeout)";
+
         // Update continue button
-        const continueButtons = document.querySelectorAll('.continue-btn');
-        continueButtons.forEach(btn => {
+        const continueButtons = document.querySelectorAll(".continue-btn");
+        continueButtons.forEach((btn) => {
           btn.disabled = true;
-          btn.textContent = '🔄 Searching...';
+          btn.textContent = "🔄 Searching...";
         });
-        
+
         setTimeout(() => {
           try {
-            const searchResult = generateAnagrams(currentSearchState.letters, true, 30000);
-            displayResults(currentSearchState.letters, searchResult.results, searchResult.canContinue);
+            const searchResult = generateAnagrams(
+              currentSearchState.letters,
+              true,
+              30000
+            );
+            displayResults(
+              currentSearchState.letters,
+              searchResult.results,
+              searchResult.canContinue
+            );
           } catch (error) {
-            console.error('Error continuing search:', error);
-            alert('An error occurred while continuing the search.');
+            console.error("Error continuing search:", error);
+            alert("An error occurred while continuing the search.");
           } finally {
             generateBtn.disabled = false;
-            generateBtn.textContent = '🔍 Generate Anagrams';
+            generateBtn.textContent = "🔍 Generate Anagrams";
           }
         }, 100);
       }
 
       // Handle form submission
-      document.getElementById('anagram-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const lettersInput = document.getElementById('letters-input');
-        const generateBtn = document.getElementById('generate-btn');
-        const letters = lettersInput.value.trim();
-        
-        if (!letters) {
-          alert('Please enter some letters first!');
-          lettersInput.focus();
-          return;
-        }
-        
-        if (!isDataLoaded) {
-          alert('Word database is still loading. Please wait a moment and try again.');
-          return;
-        }
-        
-        // Show loading state
-        generateBtn.disabled = true;
-        generateBtn.textContent = '🔄 Generating... (15s timeout)';
-        
-        // Use setTimeout to allow UI to update
-        setTimeout(() => {
-          try {
-            const searchResult = generateAnagrams(letters, false, 15000);
-            displayResults(letters, searchResult.results, searchResult.canContinue);
-          } catch (error) {
-            console.error('Error generating anagrams:', error);
-            alert('An error occurred while generating anagrams. Please try again.');
-          } finally {
-            generateBtn.disabled = false;
-            generateBtn.textContent = '🔍 Generate Anagrams';
+      document
+        .getElementById("anagram-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const lettersInput = document.getElementById("letters-input");
+          const generateBtn = document.getElementById("generate-btn");
+          const letters = lettersInput.value.trim();
+
+          if (!letters) {
+            alert("Please enter some letters first!");
+            lettersInput.focus();
+            return;
           }
-        }, 100);
-      });
+
+          if (!isDataLoaded) {
+            alert(
+              "Word database is still loading. Please wait a moment and try again."
+            );
+            return;
+          }
+
+          // Show loading state
+          generateBtn.disabled = true;
+          generateBtn.textContent = "🔄 Generating... (15s timeout)";
+
+          // Use setTimeout to allow UI to update
+          setTimeout(() => {
+            try {
+              const searchResult = generateAnagrams(letters, false, 15000);
+              displayResults(
+                letters,
+                searchResult.results,
+                searchResult.canContinue
+              );
+            } catch (error) {
+              console.error("Error generating anagrams:", error);
+              alert(
+                "An error occurred while generating anagrams. Please try again."
+              );
+            } finally {
+              generateBtn.disabled = false;
+              generateBtn.textContent = "🔍 Generate Anagrams";
+            }
+          }, 100);
+        });
 
       // Handle input formatting
-      document.getElementById('letters-input').addEventListener('input', function(e) {
-        // Only allow letters
-        this.value = this.value.replace(/[^a-zA-Z]/g, '').toUpperCase();
-      });
+      document
+        .getElementById("letters-input")
+        .addEventListener("input", function (e) {
+          // Only allow letters
+          this.value = this.value.replace(/[^a-zA-Z]/g, "").toUpperCase();
+        });
 
       // Handle keyboard shortcuts
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter' && e.ctrlKey) {
-          document.getElementById('anagram-form').dispatchEvent(new Event('submit'));
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && e.ctrlKey) {
+          document
+            .getElementById("anagram-form")
+            .dispatchEvent(new Event("submit"));
         }
       });
 
       // Focus input on page load
-      window.addEventListener('load', function() {
-        document.getElementById('letters-input').focus();
+      window.addEventListener("load", function () {
+        document.getElementById("letters-input").focus();
       });
     </script>
   </body>
