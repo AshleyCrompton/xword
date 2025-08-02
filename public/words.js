@@ -7,18 +7,21 @@ let isDataLoaded = false;
 async function loadWords() {
   try {
     console.log('Loading word and phrase data...');
+    console.log('Current URL:', window.location.href);
     
     // Load simple words from filtered_words.txt
+    console.log('Fetching filtered_words.txt...');
     const wordsResponse = await fetch("filtered_words.txt");
+    console.log('Words response status:', wordsResponse.status, wordsResponse.statusText);
     if (!wordsResponse.ok) {
-      console.error('Failed to load words file:', wordsResponse.status);
-      return;
+      console.error('Failed to load words file:', wordsResponse.status, wordsResponse.statusText);
+      throw new Error(`Failed to load words: ${wordsResponse.status}`);
     }
     
     const wordsText = await wordsResponse.text();
     const wordLines = wordsText.split('\n').filter(line => line.trim());
     
-    words = wordLines.map(word => {
+    WORDS = wordLines.map(word => {
       const trimmed = word.trim().toLowerCase();
       return {
         word: trimmed,
@@ -26,10 +29,17 @@ async function loadWords() {
       };
     });
     
-    console.log(`Loaded ${words.length} words from database`);
+    console.log(`Loaded ${WORDS.length} words from database`);
     
     // Load phrases from CSV file
+    console.log('Fetching ProcessedPhrases.csv...');
     const phrasesResponse = await fetch("ProcessedPhrases.csv");
+    console.log('Phrases response status:', phrasesResponse.status, phrasesResponse.statusText);
+    if (!phrasesResponse.ok) {
+      console.error('Failed to load phrases file:', phrasesResponse.status, phrasesResponse.statusText);
+      throw new Error(`Failed to load phrases: ${phrasesResponse.status}`);
+    }
+    
     const phrasesText = await phrasesResponse.text();
     const phraseLines = phrasesText.split("\n");
     
@@ -63,8 +73,28 @@ async function loadWords() {
     
     isDataLoaded = true;
     console.log(`Loaded ${WORDS.length} words and ${PHRASES.length} phrases`);
+    
+    // Update UI to show loading is complete
+    const loadingStatus = document.getElementById('loading-status');
+    const noResults = document.querySelector('.no-results');
+    if (loadingStatus) {
+      loadingStatus.textContent = `✅ Loaded ${WORDS.length} words and ${PHRASES.length} phrases`;
+      loadingStatus.style.color = 'green';
+    }
+    if (noResults) {
+      noResults.classList.remove('hidden');
+    }
   } catch (error) {
     console.error("Error loading data:", error);
+    
+    // Update UI to show error
+    const loadingStatus = document.getElementById('loading-status');
+    if (loadingStatus) {
+      loadingStatus.textContent = `❌ Failed to load data: ${error.message}`;
+      loadingStatus.style.color = 'red';
+    }
+    
+    alert(`Failed to load word data: ${error.message}. Please check the browser console for more details.`);
   }
 }
 

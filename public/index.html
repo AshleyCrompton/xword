@@ -322,6 +322,17 @@
           font-size: 0.8rem;
         }
       }
+      
+      .hidden {
+        display: none;
+      }
+      
+      .loading-status {
+        text-align: center;
+        padding: 1rem;
+        font-style: italic;
+        color: var(--text-secondary);
+      }
     </style>
   </head>
   <body>
@@ -390,7 +401,8 @@
 
       <div class="suggestions" id="suggestions">
         <h3>Word Suggestions</h3>
-        <div class="no-results">Enter a word length to get started</div>
+        <div class="loading-status" id="loading-status">Loading word database...</div>
+        <div class="no-results hidden">Enter a word length to get started</div>
       </div>
     </main>
 

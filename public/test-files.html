@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>S3 File Loading Test</title>
+</head>
+<body>
+    <h1>S3 File Loading Test</h1>
+    <div id="results"></div>
+    
+    <script>
+        async function testFileLoading() {
+            const results = document.getElementById('results');
+            
+            // Test filtered_words.txt
+            try {
+                console.log('Testing filtered_words.txt...');
+                const wordsResponse = await fetch("filtered_words.txt");
+                console.log('Words response:', wordsResponse.status, wordsResponse.statusText);
+                console.log('Words headers:', [...wordsResponse.headers.entries()]);
+                
+                if (wordsResponse.ok) {
+                    const wordsText = await wordsResponse.text();
+                    const wordCount = wordsText.split('\n').filter(line => line.trim()).length;
+                    results.innerHTML += `<p>✅ filtered_words.txt: ${wordCount} words loaded</p>`;
+                } else {
+                    results.innerHTML += `<p>❌ filtered_words.txt: ${wordsResponse.status} ${wordsResponse.statusText}</p>`;
+                }
+            } catch (error) {
+                results.innerHTML += `<p>❌ filtered_words.txt error: ${error.message}</p>`;
+            }
+            
+            // Test ProcessedPhrases.csv
+            try {
+                console.log('Testing ProcessedPhrases.csv...');
+                const phrasesResponse = await fetch("ProcessedPhrases.csv");
+                console.log('Phrases response:', phrasesResponse.status, phrasesResponse.statusText);
+                console.log('Phrases headers:', [...phrasesResponse.headers.entries()]);
+                
+                if (phrasesResponse.ok) {
+                    const phrasesText = await phrasesResponse.text();
+                    const phraseCount = phrasesText.split('\n').filter(line => line.trim()).length;
+                    results.innerHTML += `<p>✅ ProcessedPhrases.csv: ${phraseCount} lines loaded</p>`;
+                } else {
+                    results.innerHTML += `<p>❌ ProcessedPhrases.csv: ${phrasesResponse.status} ${phrasesResponse.statusText}</p>`;
+                }
+            } catch (error) {
+                results.innerHTML += `<p>❌ ProcessedPhrases.csv error: ${error.message}</p>`;
+            }
+            
+            // Test short_words.txt
+            try {
+                console.log('Testing short_words.txt...');
+                const shortResponse = await fetch("short_words.txt");
+                console.log('Short words response:', shortResponse.status, shortResponse.statusText);
+                
+                if (shortResponse.ok) {
+                    const shortText = await shortResponse.text();
+                    const shortCount = shortText.split('\n').filter(line => line.trim()).length;
+                    results.innerHTML += `<p>✅ short_words.txt: ${shortCount} words loaded</p>`;
+                } else {
+                    results.innerHTML += `<p>❌ short_words.txt: ${shortResponse.status} ${shortResponse.statusText}</p>`;
+                }
+            } catch (error) {
+                results.innerHTML += `<p>❌ short_words.txt error: ${error.message}</p>`;
+            }
+        }
+        
+        // Run test when page loads
+        document.addEventListener('DOMContentLoaded', testFileLoading);
+    </script>
+</body>
+</html>
