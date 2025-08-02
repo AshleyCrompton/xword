@@ -1,19 +1,44 @@
 # Data Sources for Crossword Setters Hub
+- **Results**: Crossword-style entries with proper spacing and formatting
 
-## Overview
+### Both Words and Phrases (Default)
+- Searches both databases and combines results
+- Results are grouped by type (Words first, then Phrases)
+- Best for: Comprehensive search when you want all possible matches
+
+## Anagram Generator
+
+The Anagram Generator uses a combined word database for comprehensive anagram finding:
+
+### Combined Database (for Anagrams)
+- **Sources**: `filtered_words.txt` + `short_words.txt`
+- **Total size**: 9,487 words (1-15 letters)
+- **Logic**: Perfect anagrams only - uses ALL input letters exactly once
+- **Examples**: LISTEN → SILENT, TINSEL, ENLIST; CAT → ACT; EVIL → VILE, LIVE
+
+## Technical Implementationview
 The Word & Phrase Suggestion Tool now uses two complementary data sources to provide comprehensive search capabilities for crossword construction.
 
 ## Data Sources
 
 ### 1. Words Database (`filtered_words.txt`)
-- **Source**: dwyl/english-words GitHub repository (open source, Unlicense)
-- **Original size**: 370,106 words
-- **Filtered size**: 350,193 words (3-15 letters only)
-- **Format**: Simple text file, one word per line, uppercase
-- **Content**: Single English words only (no spaces, numbers, or symbols)
-- **Examples**: AARDVARK, BICYCLE, COMPUTER, ELEPHANT
+- **Source**: Google 10,000 English Words (first20hours/google-10000-english)
+- **Original source**: Based on Google's Trillion Word Corpus frequency analysis
+- **Size**: 9,460 words (filtered for 3-15 letters)
+- **Format**: Simple text file, one word per line, lowercase
+- **Content**: Most common English words only, frequency-ordered, swear-free
+- **Quality**: Curated for practical usage - the 10,000 most frequent words cover ~90% of English usage
+- **Examples**: the, and, business, computer, research
 
-### 2. Phrases Database (`ProcessedPhrases.csv`)
+### 2. Short Words Database (`short_words.txt`)
+- **Source**: Manually curated common 1-2 letter words
+- **Size**: 27 words (1-2 letters only)
+- **Format**: Simple text file, one word per line, lowercase
+- **Content**: Essential short words for anagram generation (a, i, am, an, at, be, etc.)
+- **Usage**: Combined with main word list for comprehensive anagram generation
+- **Examples**: a, i, o, am, an, as, at, be, by, do, go, he, if, in, is, it, me, my, no, of, on, or, so, to, up, us, we
+
+### 3. Phrases Database (`ProcessedPhrases.csv`)
 - **Source**: Processed from original `Copy of AllPhrases.csv`
 - **Size**: 100,803 phrases
 - **Format**: CSV with DisplayWord and ProcessedWord columns

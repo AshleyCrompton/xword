@@ -9,25 +9,27 @@ async function loadWords() {
     console.log('Loading word and phrase data...');
     
     // Load simple words from filtered_words.txt
-    const wordsResponse = await fetch("../filtered_words.txt");
-    const wordsText = await wordsResponse.text();
-    const wordLines = wordsText.split("\n");
-    
-    WORDS = [];
-    for (let i = 0; i < wordLines.length; i++) {
-      const word = wordLines[i].trim();
-      if (word && word.length >= 3 && word.length <= 15) {
-        WORDS.push({
-          displayWord: word,
-          processedWord: word,
-          length: word.length,
-          type: 'word'
-        });
-      }
+    const wordsResponse = await fetch("filtered_words.txt");
+    if (!wordsResponse.ok) {
+      console.error('Failed to load words file:', wordsResponse.status);
+      return;
     }
     
-    // Load phrases from ProcessedPhrases.csv
-    const phrasesResponse = await fetch("../ProcessedPhrases.csv");
+    const wordsText = await wordsResponse.text();
+    const wordLines = wordsText.split('\n').filter(line => line.trim());
+    
+    words = wordLines.map(word => {
+      const trimmed = word.trim().toLowerCase();
+      return {
+        word: trimmed,
+        length: trimmed.replace(/[^a-z]/g, '').length // Count only alphabetic characters
+      };
+    });
+    
+    console.log(`Loaded ${words.length} words from database`);
+    
+    // Load phrases from CSV file
+    const phrasesResponse = await fetch("ProcessedPhrases.csv");
     const phrasesText = await phrasesResponse.text();
     const phraseLines = phrasesText.split("\n");
     

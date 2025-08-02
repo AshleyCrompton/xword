@@ -1,0 +1,21 @@
+# AWS S3 Deployment Commands
+
+# Replace 'your-crossword-site-name' with your desired bucket name
+
+# 1. Create S3 bucket
+aws s3 mb s3://your-crossword-site-name
+
+# 2. Upload files
+aws s3 sync ./public s3://your-crossword-site-name --delete
+
+# 3. Enable static website hosting
+aws s3 website s3://your-crossword-site-name --index-document index.html --error-document index.html
+
+# 4. Set bucket policy for public access (save this as policy.json first)
+aws s3api put-bucket-policy --bucket your-crossword-site-name --policy file://bucket-policy.json
+
+# Get website URL
+aws s3api get-bucket-website --bucket your-crossword-site-name
+
+# Update files (use this for ongoing updates)
+aws s3 sync ./public s3://your-crossword-site-name --delete --cache-control "max-age=31536000"
