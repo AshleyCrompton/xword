@@ -1,0 +1,29 @@
+# AWS Route 53 Domain Registration Commands
+
+# 1. Check domain availability (replace 'yourdomain.com' with desired domain)
+aws route53domains check-domain-availability --domain-name yourdomain.com
+
+# 2. Get domain suggestions if your preferred name is taken
+aws route53domains get-domain-suggestions --domain-name crosswordtools --suggestion-count 10
+
+# 3. Register domain (interactive - will prompt for contact details)
+aws route53domains register-domain --domain-name yourdomain.com --duration-in-years 1 --admin-contact file://contact-info.json --registrant-contact file://contact-info.json --tech-contact file://contact-info.json
+
+# 4. Check registration status
+aws route53domains get-operation-detail --operation-id YOUR_OPERATION_ID
+
+# 5. List your domains
+aws route53domains list-domains
+
+# 6. Get hosted zone ID for your domain
+aws route53 list-hosted-zones-by-name --dns-name yourdomain.com
+
+# 7. Create A record pointing to CloudFront (after CloudFront setup)
+aws route53 change-resource-record-sets --hosted-zone-id YOUR_HOSTED_ZONE_ID --change-batch file://dns-records.json
+
+# 8. Check DNS propagation status
+nslookup yourdomain.com
+dig yourdomain.com
+
+# Cost check - get domain pricing
+aws route53domains get-domain-detail --domain-name yourdomain.com

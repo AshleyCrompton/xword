@@ -1,7 +1,9 @@
 // This file loads words from multiple sources
 let WORDS = [];
 let PHRASES = [];
+let FULL_WORDS = [];
 let isDataLoaded = false;
+let isFullWordsLoaded = false;
 
 // Load data from both sources
 async function loadWords() {
@@ -33,6 +35,9 @@ async function loadWords() {
       const trimmed = word.trim().toLowerCase();
       return {
         word: trimmed,
+        processedWord: trimmed, // Add processedWord property for search
+        displayWord: trimmed, // Add displayWord property for display
+        type: "word", // Add type property
         length: trimmed.replace(/[^a-z]/g, "").length, // Count only alphabetic characters
       };
     });
@@ -116,8 +121,46 @@ async function loadWords() {
   }
 }
 
+// Load full words list on demand
+async function loadFullWords() {
+  if (isFullWordsLoaded) {
+    return FULL_WORDS;
+  }
+
+  try {
+    console.log("Loading full words list from words_alpha.txt...");
+
+    const response = await fetch("words_alpha.txt");
+    if (!response.ok) {
+      throw new Error(`Failed to load full words list: ${response.status}`);
+    }
+
+    const text = await response.text();
+    const lines = text.split("\n").filter((line) => line.trim());
+
+    FULL_WORDS = lines.map((word) => {
+      const trimmed = word.trim().toLowerCase();
+      return {
+        word: trimmed,
+        processedWord: trimmed,
+        displayWord: trimmed,
+        type: "fullword",
+        length: trimmed.replace(/[^a-z]/g, "").length,
+      };
+    });
+
+    isFullWordsLoaded = true;
+    console.log(`Loaded ${FULL_WORDS.length} words from full words list`);
+
+    return FULL_WORDS;
+  } catch (error) {
+    console.error("Error loading full words list:", error);
+    throw error;
+  }
+}
+
 // Get combined data based on selection
-function getCombinedData(selection = "both") {
+async function getCombinedData(selection = "both") {
   if (!isDataLoaded) {
     return [];
   }
@@ -127,6 +170,14 @@ function getCombinedData(selection = "both") {
       return WORDS;
     case "phrases":
       return PHRASES;
+    case "fullwords":
+      // Load full words on demand
+      try {
+        return await loadFullWords();
+      } catch (error) {
+        console.error("Failed to load full words:", error);
+        return [];
+      }
     case "both":
     default:
       return [...WORDS, ...PHRASES];
