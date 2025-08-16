@@ -307,29 +307,18 @@
       let WORDS = [];
       let isDataLoaded = false;
 
-      // Load words from both the main word list and short words
+      // Load words from words.txt only
       async function loadWords() {
         try {
           console.log("Loading word data for anagram generation...");
 
-          // Load main word list
-          const mainWordsResponse = await fetch("filtered_words.txt");
-          const mainWordsText = await mainWordsResponse.text();
-          const mainWords = mainWordsText
+          // Load words from words.txt
+          const wordsResponse = await fetch("words.txt");
+          const wordsText = await wordsResponse.text();
+          WORDS = wordsText
             .split("\n")
             .map((word) => word.trim().toLowerCase())
-            .filter((word) => word.length >= 3);
-
-          // Load short words (1-2 letters)
-          const shortWordsResponse = await fetch("short_words.txt");
-          const shortWordsText = await shortWordsResponse.text();
-          const shortWords = shortWordsText
-            .split("\n")
-            .map((word) => word.trim().toLowerCase())
-            .filter((word) => word.length >= 1 && word.length <= 2);
-
-          // Combine and deduplicate
-          WORDS = [...new Set([...shortWords, ...mainWords])];
+            .filter((word) => word.length >= 1); // Include all words, even 1-2 letter ones
 
           isDataLoaded = true;
           console.log(`Loaded ${WORDS.length} words for anagram generation`);
@@ -601,48 +590,182 @@
             console.log(
               `Filtered to ${currentSearchState.candidateWords.length} candidate words`
             );
+
+            // Debug: check if specific words are in candidates
+            const testWords = ["fated", "holy", "lady", "of", "the"];
+            testWords.forEach((word) => {
+              const isCandidate =
+                currentSearchState.candidateWords.includes(word);
+              console.log(
+                `Test word "${word}": ${
+                  isCandidate ? "IN" : "NOT IN"
+                } candidates`
+              );
+            });
+
             currentSearchState.searchPhase = "multi-word";
           }
 
-          // Phase 3: Multi-word combinations
+          // Phase 3: Direct 1-word and 2-word search
           if (currentSearchState.searchPhase === "multi-word") {
-            console.log(
-              `Phase 3: Multi-word search (timeout: ${timeoutMs}ms)...`
-            );
+            console.log("Phase 3: Direct 1-word and 2-word search...");
 
-            if (normalizedInput.length >= 10) {
-              // For long inputs, use targeted approach
-              const multiWordResults = findTargetedCombinations(
-                letters,
-                currentSearchState.candidateWords,
-                startTime,
-                timeoutMs
-              );
-              results.push(...multiWordResults);
-            } else {
-              // For shorter inputs, use recursive approach
-              const combinations = [];
-              findWordCombinationsOptimized(
-                letters,
-                [],
-                combinations,
-                currentSearchState.candidateWords,
-                startTime,
-                0,
-                timeoutMs
-              );
+            // Strategy 1: Look for exact 1-word matches
+            console.log("Searching for 1-word anagrams...");
+            for (let word of currentSearchState.candidateWords) {
+              const wordLetters = normalizeLetters(word);
+              if (wordLetters === normalizedInput) {
+                console.log(`Found 1-word anagram: "${word}"`);
+                results.push({
+                  text: word,
+                  wordCount: 1,
+                  words: [word],
+                });
+              }
+            }
 
-              for (let combination of combinations) {
-                if (combination.length > 1) {
-                  results.push({
-                    text: combination.join(" "),
-                    wordCount: combination.length,
-                    words: combination,
-                  });
+            // Strategy 2: Look for exact 2-word matches
+            console.log("Searching for 2-word anagrams...");
+            let twoWordCount = 0;
+            for (
+              let i = 0;
+              i < currentSearchState.candidateWords.length &&
+              twoWordCount < 1000;
+              i++
+            ) {
+              const word1 = currentSearchState.candidateWords[i];
+              const word1Letters = normalizeLetters(word1);
+
+              // Skip if word1 is too long
+              if (word1Letters.length >= normalizedInput.length) continue;
+
+              // Calculate remaining letters after word1
+              const remainingLetters = removeLettersFromString(letters, word1);
+              const remainingNormalized = normalizeLetters(remainingLetters);
+
+              // Look for a second word that uses exactly the remaining letters
+              for (
+                let j = i;
+                j < currentSearchState.candidateWords.length;
+                j++
+              ) {
+                const word2 = currentSearchState.candidateWords[j];
+                const word2Letters = normalizeLetters(word2);
+
+                // Check if word2 exactly matches remaining letters
+                if (word2Letters === remainingNormalized) {
+                  twoWordCount++;
+                  const sortedWords = [word1, word2].sort();
+                  const result = {
+                    text: sortedWords.join(" "),
+                    wordCount: 2,
+                    words: sortedWords,
+                  };
+
+                  console.log(`Found 2-word anagram: "${result.text}"`);
+                  results.push(result);
+
+                  // Check if this is our target combination
+                  if (
+                    result.text.includes("fated") &&
+                    result.text.includes("holy")
+                  ) {
+                    console.log(`🎯 FOUND TARGET: "${result.text}"`);
+                  }
                 }
               }
             }
 
+            console.log(`Found ${twoWordCount} two-word combinations`);
+
+            // Strategy 3: Look for exact 3-word matches
+            console.log("Searching for 3-word anagrams...");
+            let threeWordCount = 0;
+            for (
+              let i = 0;
+              i < currentSearchState.candidateWords.length &&
+              threeWordCount < 500;
+              i++
+            ) {
+              const word1 = currentSearchState.candidateWords[i];
+              const word1Letters = normalizeLetters(word1);
+
+              // Skip if word1 is too long
+              if (word1Letters.length >= normalizedInput.length - 1) continue;
+
+              // Check if word1 can be formed from original letters
+              if (!canWordBeFormedFromLetters(word1, letters)) continue;
+
+              // Calculate remaining letters after word1
+              const remainingAfterWord1 = removeLettersFromString(
+                letters,
+                word1
+              );
+
+              for (
+                let j = i;
+                j < currentSearchState.candidateWords.length;
+                j++
+              ) {
+                const word2 = currentSearchState.candidateWords[j];
+                const word2Letters = normalizeLetters(word2);
+
+                // Skip if word2 is too long for remaining letters
+                if (
+                  word2Letters.length >=
+                  normalizeLetters(remainingAfterWord1).length
+                )
+                  continue;
+
+                // Check if word2 can be formed from remaining letters after word1
+                if (!canWordBeFormedFromLetters(word2, remainingAfterWord1))
+                  continue;
+
+                // Calculate remaining letters after word1 + word2
+                const remainingAfterWord2 = removeLettersFromString(
+                  remainingAfterWord1,
+                  word2
+                );
+                const remainingNormalized =
+                  normalizeLetters(remainingAfterWord2);
+
+                // Look for a third word that uses exactly the remaining letters
+                for (
+                  let k = j;
+                  k < currentSearchState.candidateWords.length;
+                  k++
+                ) {
+                  const word3 = currentSearchState.candidateWords[k];
+                  const word3Letters = normalizeLetters(word3);
+
+                  // Check if word3 exactly matches remaining letters
+                  if (word3Letters === remainingNormalized) {
+                    threeWordCount++;
+                    const sortedWords = [word1, word2, word3].sort();
+                    const result = {
+                      text: sortedWords.join(" "),
+                      wordCount: 3,
+                      words: sortedWords,
+                    };
+
+                    console.log(`Found 3-word anagram: "${result.text}"`);
+                    results.push(result);
+
+                    // Check if this contains our target words
+                    if (
+                      result.text.includes("fated") &&
+                      result.text.includes("holy")
+                    ) {
+                      console.log(
+                        `🎯 FOUND TARGET IN 3-WORD: "${result.text}"`
+                      );
+                    }
+                  }
+                }
+              }
+            }
+
+            console.log(`Found ${threeWordCount} three-word combinations`);
             currentSearchState.searchPhase = "complete";
           }
 
@@ -655,8 +778,16 @@
         }
 
         console.log(`Total results found: ${results.length}`);
+
+        // Deduplicate results before returning
+        console.log(`Calling deduplication on ${results.length} results...`);
+        const deduplicatedResults = deduplicateAnagramResults(results);
+        console.log(
+          `After deduplication: ${deduplicatedResults.length} unique results`
+        );
+
         return {
-          results: [...results],
+          results: deduplicatedResults,
           canContinue:
             currentSearchState.lastTimeout &&
             currentSearchState.searchPhase !== "complete",
@@ -680,9 +811,10 @@
 
         // Try 2-word combinations with strategic filtering
         let combinationsChecked = 0;
+        const maxResults = Math.min(200, Math.floor(timeoutMs / 75)); // Increased for testing: 200 max
         for (
           let i = 0;
-          i < candidateWords.length && results.length < 200;
+          i < candidateWords.length && results.length < maxResults;
           i++
         ) {
           // Check timeout
@@ -758,8 +890,11 @@
         }
 
         // Increase combination limit for longer timeouts
-        const maxCombinations = Math.min(500, Math.floor(timeoutMs / 30)); // 500 max, but scale with timeout
+        const maxCombinations = Math.min(5000, Math.floor(timeoutMs / 75)); // Increased for testing: 5000 max
         if (allCombinations.length > maxCombinations) {
+          console.log(
+            `Hit combination limit: ${allCombinations.length} combinations found, limit was ${maxCombinations}`
+          );
           throw new Error(
             "Too many combinations found - use continue button for more"
           );
@@ -783,12 +918,21 @@
         }
 
         // Only try words that could fit in remaining letters
+        let checkedWords = 0;
+        let validWords = 0;
+
         for (let word of candidateWords) {
+          checkedWords++;
           if (normalizeLetters(word).length > remainingNormalized.length)
             continue;
           if (currentWords.includes(word)) continue; // Avoid duplicates
 
           if (canWordBeFormedFromLetters(word, remainingLetters)) {
+            validWords++;
+            if (validWords <= 2 && depth === 0) {
+              // Only log first 2 words at depth 0
+              console.log(`Valid word found: "${word}"`);
+            }
             const newRemainingLetters = removeLettersFromString(
               remainingLetters,
               word
@@ -804,9 +948,51 @@
             );
           }
         }
+
+        if (depth === 0) {
+          console.log(
+            `First level search complete: checked ${checkedWords} words, found ${validWords} valid starting words`
+          );
+        }
       }
 
       // Group anagrams by word count and then by length
+      // Deduplicate anagram results by treating word combinations as sets
+      function deduplicateAnagramResults(results) {
+        console.log(`Starting deduplication with ${results.length} results`);
+        const seenSets = new Set();
+        const deduplicated = [];
+
+        results.forEach((result, index) => {
+          // Create a signature for this word set by sorting and joining
+          const signature = [...result.words].sort().join("|");
+          console.log(
+            `Result ${index}: "${result.text}" -> signature: "${signature}"`
+          );
+
+          if (!seenSets.has(signature)) {
+            seenSets.add(signature);
+            // Ensure the result uses the sorted words for consistent display
+            const deduplicatedResult = {
+              ...result,
+              text: [...result.words].sort().join(" "),
+              words: [...result.words].sort(),
+            };
+            console.log(`Added unique result: "${deduplicatedResult.text}"`);
+            deduplicated.push(deduplicatedResult);
+          } else {
+            console.log(
+              `Skipped duplicate: "${result.text}" (signature: "${signature}")`
+            );
+          }
+        });
+
+        console.log(
+          `Deduplication complete: ${deduplicated.length} unique results`
+        );
+        return deduplicated;
+      }
+
       function groupAnagramsByType(anagrams) {
         const groups = {
           single: {},

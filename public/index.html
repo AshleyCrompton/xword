@@ -467,19 +467,20 @@
           Choose your search scope: words only (9k+ curated words), phrases only
           (100k+ crossword phrases), both combined, or the full words list
           (370k+ comprehensive dictionary). The full words list loads on demand
-          for maximum performance. 
+          for maximum performance.
         </p>
         <p>
-          <strong>For words:</strong> Enter the number of letters, then fill in any
-          known letters in their positions. Leave unknown positions blank.
+          <strong>For words:</strong> Enter the number of letters, then fill in
+          any known letters in their positions. Leave unknown positions blank.
           <strong>Tip:</strong> Use spacebar, tab, or arrow keys to navigate
           between letter boxes quickly.
         </p>
         <p>
-          <strong>For phrases only:</strong> Enter the total letter count, then specify the 
-          word pattern (e.g., "3,3" for two 3-letter words, "4,2" for a 4-letter word followed 
-          by a 2-letter word). Click "Generate Pattern" to create the input fields, then fill 
-          in known letters within each word group.
+          <strong>For phrases only:</strong> Enter the total letter count, then
+          specify the word pattern (e.g., "3,3" for two 3-letter words, "4,2"
+          for a 4-letter word followed by a 2-letter word). Click "Generate
+          Pattern" to create the input fields, then fill in known letters within
+          each word group.
         </p>
       </div>
 
@@ -513,16 +514,18 @@
       </form>
 
       <form id="pattern-form" class="tool-form hidden">
-        <div class="form-group" id="phrase-pattern-group" style="display: none;">
+        <div class="form-group" id="phrase-pattern-group" style="display: none">
           <label for="phrase-pattern">Phrase Pattern (e.g., 3,3 or 4,2):</label>
-          <input 
-            type="text" 
-            id="phrase-pattern" 
+          <input
+            type="text"
+            id="phrase-pattern"
             name="phrase-pattern"
             placeholder="Enter pattern like 3,3 or 4,2,1"
-            style="margin-bottom: 1rem;"
+            style="margin-bottom: 1rem"
           />
-          <button type="button" id="generate-pattern" class="btn btn-secondary">Generate Pattern</button>
+          <button type="button" id="generate-pattern" class="btn btn-secondary">
+            Generate Pattern
+          </button>
         </div>
         <div class="form-group">
           <label id="pattern-label"
@@ -564,7 +567,7 @@
           input.style.textTransform = "uppercase";
           input.placeholder = "?";
           input.dataset.position = i;
-          
+
           input.addEventListener("input", function () {
             this.value = this.value.toUpperCase().replace(/[^A-Z]/g, "");
             // Auto-advance to next input
@@ -573,7 +576,7 @@
               if (nextInput) nextInput.focus();
             }
           });
-          
+
           input.addEventListener("keydown", function (e) {
             // Allow backspace to go to previous input
             if (e.key === "Backspace" && !this.value && i > 0) {
@@ -599,7 +602,7 @@
               if (prevInput) prevInput.focus();
             }
           });
-          
+
           letterInputs.appendChild(input);
         }
       }
@@ -607,33 +610,40 @@
       // Add event listener for pattern generation
 
       // Add event listener for pattern generation
-      document.getElementById("generate-pattern").addEventListener("click", function() {
-        const patternInput = document.getElementById("phrase-pattern");
-        const pattern = patternInput.value.trim();
-        
-        if (!pattern) {
-          alert("Please enter a pattern like 3,3 or 4,2");
-          return;
-        }
-        
-        // Parse pattern
-        const groups = pattern.split(',').map(num => parseInt(num.trim())).filter(num => !isNaN(num) && num > 0);
-        
-        if (groups.length === 0) {
-          alert("Invalid pattern. Use format like 3,3 or 4,2,1");
-          return;
-        }
-        
-        // Check if total matches expected length
-        const totalLetters = groups.reduce((sum, num) => sum + num, 0);
-        if (totalLetters !== currentLength) {
-          alert(`Pattern total (${totalLetters}) doesn't match word length (${currentLength})`);
-          return;
-        }
-        
-        // Generate phrase inputs based on pattern
-        generatePhraseInputsFromPattern(groups);
-      });
+      document
+        .getElementById("generate-pattern")
+        .addEventListener("click", function () {
+          const patternInput = document.getElementById("phrase-pattern");
+          const pattern = patternInput.value.trim();
+
+          if (!pattern) {
+            alert("Please enter a pattern like 3,3 or 4,2");
+            return;
+          }
+
+          // Parse pattern
+          const groups = pattern
+            .split(",")
+            .map((num) => parseInt(num.trim()))
+            .filter((num) => !isNaN(num) && num > 0);
+
+          if (groups.length === 0) {
+            alert("Invalid pattern. Use format like 3,3 or 4,2,1");
+            return;
+          }
+
+          // Check if total matches expected length
+          const totalLetters = groups.reduce((sum, num) => sum + num, 0);
+          if (totalLetters !== currentLength) {
+            alert(
+              `Pattern total (${totalLetters}) doesn't match word length (${currentLength})`
+            );
+            return;
+          }
+
+          // Generate phrase inputs based on pattern
+          generatePhraseInputsFromPattern(groups);
+        });
 
       lengthForm.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -647,18 +657,22 @@
 
         // Update label and show/hide pattern input based on search type
         const patternLabel = document.getElementById("pattern-label");
-        const phrasePatternGroup = document.getElementById("phrase-pattern-group");
-        
+        const phrasePatternGroup = document.getElementById(
+          "phrase-pattern-group"
+        );
+
         if (currentSearchType === "phrases") {
           patternLabel.textContent = "Enter known letters for each word group:";
           phrasePatternGroup.style.display = "block";
-          
+
           // Clear previous inputs and show pattern input
-          letterInputs.innerHTML = '<div style="text-align: center; color: #666; padding: 2rem;">Enter a pattern above and click "Generate Pattern" to create input fields</div>';
+          letterInputs.innerHTML =
+            '<div style="text-align: center; color: #666; padding: 2rem;">Enter a pattern above and click "Generate Pattern" to create input fields</div>';
         } else {
-          patternLabel.textContent = "Enter known letters (leave blank for unknown positions):";
+          patternLabel.textContent =
+            "Enter known letters (leave blank for unknown positions):";
           phrasePatternGroup.style.display = "none";
-          
+
           // Create standard word inputs
           createWordInputs(currentLength);
         }
@@ -683,37 +697,44 @@
       });
 
       // Add event listener for pattern generation
-      document.getElementById("generate-pattern").addEventListener("click", function() {
-        const patternInput = document.getElementById("phrase-pattern");
-        const pattern = patternInput.value.trim();
-        
-        if (!pattern) {
-          alert("Please enter a pattern like 3,3 or 4,2");
-          return;
-        }
-        
-        // Parse pattern
-        const groups = pattern.split(',').map(num => parseInt(num.trim())).filter(num => !isNaN(num) && num > 0);
-        
-        if (groups.length === 0) {
-          alert("Invalid pattern. Use format like 3,3 or 4,2,1");
-          return;
-        }
-        
-        // Check if total matches expected length
-        const totalLetters = groups.reduce((sum, num) => sum + num, 0);
-        if (totalLetters !== currentLength) {
-          alert(`Pattern total (${totalLetters}) doesn't match word length (${currentLength})`);
-          return;
-        }
-        
-        // Generate phrase inputs based on pattern
-        generatePhraseInputsFromPattern(groups);
-      });
+      document
+        .getElementById("generate-pattern")
+        .addEventListener("click", function () {
+          const patternInput = document.getElementById("phrase-pattern");
+          const pattern = patternInput.value.trim();
+
+          if (!pattern) {
+            alert("Please enter a pattern like 3,3 or 4,2");
+            return;
+          }
+
+          // Parse pattern
+          const groups = pattern
+            .split(",")
+            .map((num) => parseInt(num.trim()))
+            .filter((num) => !isNaN(num) && num > 0);
+
+          if (groups.length === 0) {
+            alert("Invalid pattern. Use format like 3,3 or 4,2,1");
+            return;
+          }
+
+          // Check if total matches expected length
+          const totalLetters = groups.reduce((sum, num) => sum + num, 0);
+          if (totalLetters !== currentLength) {
+            alert(
+              `Pattern total (${totalLetters}) doesn't match word length (${currentLength})`
+            );
+            return;
+          }
+
+          // Generate phrase inputs based on pattern
+          generatePhraseInputsFromPattern(groups);
+        });
 
       function generatePhraseInputsFromPattern(groups) {
         letterInputs.innerHTML = "";
-        
+
         groups.forEach((groupSize, groupIndex) => {
           // Create group container
           const groupContainer = document.createElement("div");
@@ -721,7 +742,7 @@
           groupContainer.style.display = "inline-block";
           groupContainer.style.margin = "0 1rem 1rem 0";
           groupContainer.style.textAlign = "center";
-          
+
           // Add group label
           const groupLabel = document.createElement("div");
           groupLabel.textContent = `Word ${groupIndex + 1}`;
@@ -730,13 +751,13 @@
           groupLabel.style.marginBottom = "0.5rem";
           groupLabel.style.fontWeight = "bold";
           groupContainer.appendChild(groupLabel);
-          
+
           // Create input row for this group
           const inputRow = document.createElement("div");
           inputRow.style.display = "flex";
           inputRow.style.gap = "0.25rem";
           inputRow.style.justifyContent = "center";
-          
+
           for (let i = 0; i < groupSize; i++) {
             const input = document.createElement("input");
             input.type = "text";
@@ -747,7 +768,7 @@
             input.placeholder = "?";
             input.dataset.groupIndex = groupIndex;
             input.dataset.positionInGroup = i;
-            
+
             input.addEventListener("input", function () {
               this.value = this.value.toUpperCase().replace(/[^A-Z]/g, "");
               // Auto-advance to next input
@@ -756,7 +777,7 @@
                 if (nextInput) nextInput.focus();
               }
             });
-            
+
             input.addEventListener("keydown", function (e) {
               if (e.key === "Backspace" && !this.value) {
                 const prevInput = findPrevInputInPhrase(this);
@@ -771,26 +792,26 @@
                 if (prevInput) prevInput.focus();
               }
             });
-            
+
             inputRow.appendChild(input);
           }
-          
+
           groupContainer.appendChild(inputRow);
           letterInputs.appendChild(groupContainer);
         });
-        
+
         // Focus first input
         const firstInput = letterInputs.querySelector("input");
         if (firstInput) firstInput.focus();
       }
-      
+
       // Helper functions for phrase navigation
       function findNextInputInPhrase(currentInput) {
         const allInputs = Array.from(letterInputs.querySelectorAll("input"));
         const currentIndex = allInputs.indexOf(currentInput);
         return allInputs[currentIndex + 1] || null;
       }
-      
+
       function findPrevInputInPhrase(currentInput) {
         const allInputs = Array.from(letterInputs.querySelectorAll("input"));
         const currentIndex = allInputs.indexOf(currentInput);
@@ -811,16 +832,16 @@
 
         let pattern = "";
         let spacePattern = "";
-        
+
         if (currentSearchType === "phrases") {
           // Build space pattern from phrase groups
           const groups = letterInputs.querySelectorAll(".phrase-group");
           let displayPattern = "";
           let searchPattern = "";
-          
+
           groups.forEach((group, groupIndex) => {
             const inputs = group.querySelectorAll("input");
-            inputs.forEach(input => {
+            inputs.forEach((input) => {
               const value = input.value.trim().toUpperCase();
               if (value) {
                 displayPattern += value;
@@ -830,16 +851,16 @@
                 searchPattern += ".";
               }
             });
-            
+
             // Add space between groups (except after last group)
             if (groupIndex < groups.length - 1) {
               displayPattern += " ";
             }
           });
-          
+
           spacePattern = displayPattern;
           pattern = searchPattern; // No spaces in search pattern
-          
+
           // Check if pattern has been generated (has groups)
           if (groups.length === 0) {
             suggestionsDiv.innerHTML = `
@@ -877,34 +898,38 @@
 
             // Filter matches
             let matches;
-            
+
             if (currentSearchType === "phrases" && spacePattern.includes(" ")) {
               // For phrases with space pattern, check display word format
               matches = searchData.filter((item) => {
                 if (item.type !== "phrase") return false;
-                
+
                 // Count non-space characters in display word
-                const displayLetterCount = item.displayWord.replace(/[^A-Z]/gi, '').length;
+                const displayLetterCount = item.displayWord.replace(
+                  /[^A-Z]/gi,
+                  ""
+                ).length;
                 if (displayLetterCount !== currentLength) return false;
-                
+
                 // Check if display word matches space pattern structure
-                if (spacePattern.length !== item.displayWord.length) return false;
-                
+                if (spacePattern.length !== item.displayWord.length)
+                  return false;
+
                 for (let i = 0; i < spacePattern.length; i++) {
                   const patternChar = spacePattern[i];
                   const displayChar = item.displayWord[i];
-                  
-                  if (patternChar === ' ') {
+
+                  if (patternChar === " ") {
                     // Space required at this position
-                    if (displayChar !== ' ') return false;
-                  } else if (patternChar !== '.') {
+                    if (displayChar !== " ") return false;
+                  } else if (patternChar !== ".") {
                     // Specific letter required
                     if (displayChar.toUpperCase() !== patternChar) return false;
                   }
                   // For '.', any non-space character is acceptable
-                  else if (displayChar === ' ') return false;
+                  else if (displayChar === " ") return false;
                 }
-                
+
                 return true;
               });
             } else {

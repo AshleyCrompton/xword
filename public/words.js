@@ -11,9 +11,9 @@ async function loadWords() {
     console.log("Loading word and phrase data...");
     console.log("Current URL:", window.location.href);
 
-    // Load simple words from filtered_words.txt
-    console.log("Fetching filtered_words.txt...");
-    const wordsResponse = await fetch("filtered_words.txt");
+    // Load simple words from words.txt
+    console.log("Fetching words.txt...");
+    const wordsResponse = await fetch("words.txt");
     console.log(
       "Words response status:",
       wordsResponse.status,
