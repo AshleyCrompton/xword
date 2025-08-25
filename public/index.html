@@ -556,6 +556,8 @@
 
       // Function to create standard word inputs
       function createWordInputs(length) {
+        // Clear previous inputs before creating new ones
+        letterInputs.innerHTML = "";
         for (let i = 0; i < length; i++) {
           const input = document.createElement("input");
           input.type = "text";
@@ -616,29 +618,30 @@
           const patternInput = document.getElementById("phrase-pattern");
           const pattern = patternInput.value.trim();
 
+          let groups;
           if (!pattern) {
-            alert("Please enter a pattern like 3,3 or 4,2");
-            return;
-          }
+            // Allow any pattern: treat as a single group of full length
+            groups = [currentLength];
+          } else {
+            // Parse pattern
+            groups = pattern
+              .split(",")
+              .map((num) => parseInt(num.trim()))
+              .filter((num) => !isNaN(num) && num > 0);
 
-          // Parse pattern
-          const groups = pattern
-            .split(",")
-            .map((num) => parseInt(num.trim()))
-            .filter((num) => !isNaN(num) && num > 0);
+            if (groups.length === 0) {
+              alert("Invalid pattern. Use format like 3,3 or 4,2,1");
+              return;
+            }
 
-          if (groups.length === 0) {
-            alert("Invalid pattern. Use format like 3,3 or 4,2,1");
-            return;
-          }
-
-          // Check if total matches expected length
-          const totalLetters = groups.reduce((sum, num) => sum + num, 0);
-          if (totalLetters !== currentLength) {
-            alert(
-              `Pattern total (${totalLetters}) doesn't match word length (${currentLength})`
-            );
-            return;
+            // Check if total matches expected length
+            const totalLetters = groups.reduce((sum, num) => sum + num, 0);
+            if (totalLetters !== currentLength) {
+              alert(
+                `Pattern total (${totalLetters}) doesn't match word length (${currentLength})`
+              );
+              return;
+            }
           }
 
           // Generate phrase inputs based on pattern
@@ -696,41 +699,7 @@
         if (firstInput) firstInput.focus();
       });
 
-      // Add event listener for pattern generation
-      document
-        .getElementById("generate-pattern")
-        .addEventListener("click", function () {
-          const patternInput = document.getElementById("phrase-pattern");
-          const pattern = patternInput.value.trim();
-
-          if (!pattern) {
-            alert("Please enter a pattern like 3,3 or 4,2");
-            return;
-          }
-
-          // Parse pattern
-          const groups = pattern
-            .split(",")
-            .map((num) => parseInt(num.trim()))
-            .filter((num) => !isNaN(num) && num > 0);
-
-          if (groups.length === 0) {
-            alert("Invalid pattern. Use format like 3,3 or 4,2,1");
-            return;
-          }
-
-          // Check if total matches expected length
-          const totalLetters = groups.reduce((sum, num) => sum + num, 0);
-          if (totalLetters !== currentLength) {
-            alert(
-              `Pattern total (${totalLetters}) doesn't match word length (${currentLength})`
-            );
-            return;
-          }
-
-          // Generate phrase inputs based on pattern
-          generatePhraseInputsFromPattern(groups);
-        });
+      // ...existing code...
 
       function generatePhraseInputsFromPattern(groups) {
         letterInputs.innerHTML = "";
